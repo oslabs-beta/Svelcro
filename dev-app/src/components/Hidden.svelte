@@ -9,6 +9,11 @@
       shown = !shown;
       dispatch('show', shown);
   }
+
+  export function noShow() {
+    shown = false;
+    dispatch('show', shown);
+  }
 </script>
 
 <svelte:options accessors={true}/>

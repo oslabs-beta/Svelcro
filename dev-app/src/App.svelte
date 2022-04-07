@@ -2,9 +2,9 @@
 	// COMPONENT IMPORTS
 	import Nav from './components/nav.svelte';
 	import Router from 'svelte-spa-router';
-	import ComponentDisplay from './componentDisplay.svelte'
-  import ProfilerDisplay from './profilerDisplay.svelte'
-  import TimeMachineDisplay from './timeMachineDisplay.svelte'
+	// import ComponentDisplay from './componentDisplay.svelte'
+  // import ProfilerDisplay from './profilerDisplay.svelte'
+  // import TimeMachineDisplay from './timeMachineDisplay.svelte'
 	export let name;
 </script>
 

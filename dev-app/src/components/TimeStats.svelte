@@ -1,18 +1,22 @@
 <script>
-
+// COMPONENT IMPORTS
 </script>
 
-<div id="component-stats">
-  Component stats
+
+<div id="time-stats">
+  Time Stats
 </div>
+
 
 <style>
 
-#component-stats{
+#time-stats{
   border-left: 1px solid rgb(1, 1, 1);
 
   width: 50%;
   height: 100%;
+
 }
 
 </style>
+    

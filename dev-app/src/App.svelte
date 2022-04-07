@@ -1,15 +1,10 @@
 <script>
 	// COMPONENT IMPORTS
-	import Nav from './components/nav.svelte';
-	import Router from 'svelte-spa-router';
-	// import ComponentDisplay from './componentDisplay.svelte'
-  // import ProfilerDisplay from './profilerDisplay.svelte'
-  // import TimeMachineDisplay from './timeMachineDisplay.svelte'
-	export let name;
+	import Nav from './components/Nav.svelte';
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
+	<h1>Svelcro</h1>
 	<Nav/>
 </main>
 
@@ -17,9 +12,13 @@
 
 	main {
 		text-align: center;
-		padding: 1em;
-		max-width: 240px;
+		max-width: auto;
 		margin: 0 auto;
+
+		height: 100%;
+
+		/* Background Color */
+		background-color: rgb(37,35,37);
 	}
 
 	h1 {
@@ -27,6 +26,7 @@
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
+		margin: 0;;
 	}
 
 	@media (min-width: 640px) {

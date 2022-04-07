@@ -1,9 +1,8 @@
 <script>
   // COMPONENT IMPORTS
-  import ComponentDisplay from './componentDisplay.svelte'
-  import ProfilerDisplay from './profilerDisplay.svelte'
-  import TimeMachineDisplay from './timeMachineDisplay.svelte'
-  // import Router, {location} from 'svelte-spa-router'
+  import ComponentDisplay from './displays/ComponentDisplay.svelte'
+  import ProfilerDisplay from './displays/ProfilerDisplay.svelte'
+  import TimeMachineDisplay from './displays/TimeMachineDisplay.svelte'
 
   import Hidden from './Hidden.svelte';
 
@@ -39,17 +38,14 @@
 </nav>
 
 <Hidden bind:this={child} on:show={e => child.shown = e.detail}>
-  <div>Componet Logic</div>
   <ComponentDisplay/>
 </Hidden>
 
 <Hidden bind:this={child1} on:show={e => child1.shown = e.detail}>
-  <div>Profiler Logic</div>
   <ProfilerDisplay/>
 </Hidden>
 
 <Hidden bind:this={child2} on:show={e => child2.shown = e.detail}>
-  <div>Time Machine Logic</div>
   <TimeMachineDisplay/>
 </Hidden>
 
@@ -57,9 +53,25 @@
 <style>
 
   nav {
-    background-color: rgba(122, 122, 122, 0.8);
+    /* background-color: rgb(37,35,37); */
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    height: 45px;
+
+    display: flex;
+    justify-content: space-evenly;
+
+    height: 8%;
   }
+
+  button {
+    background-color: rgb(45, 42, 45);
+    cursor: pointer;
+    border: none;
+    width: 100%;
+
+    /* TEXT COLOR */
+    color: rgba(245, 245, 245, 0.543);
+  }
+
+
 
 </style>

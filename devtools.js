@@ -2,8 +2,6 @@
 chrome.devtools.panels.create('Svelcro', 'callback','panel.html')
 
 
-
-
 chrome.devtools.panels.elements.createSidebarPane("My Sidebar",
     function(sidebar) {
         // sidebar initialization code here
@@ -11,3 +9,8 @@ chrome.devtools.panels.elements.createSidebarPane("My Sidebar",
         // sidebar.setPage("sidebar.html");
         // sidebar.setHeight("8ex");
 })
+
+chrome.devtools.inspectedWindow.getResources(function(resources) {
+    console.log(resources)
+  })
+  

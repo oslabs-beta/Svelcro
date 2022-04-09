@@ -3,6 +3,18 @@
     "version": "1.0",
     "minimum_chrome_version": "10.0",
     "manifest_version": 3,
-    "devtools_page": "devtools.html"
+    "devtools_page": "devtools.html",
+    "permissions": [
+        "contextMenus",
+        "tabs",
+        "activeTab"
+    ],
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+    }],
+    "background": {
+        "service_worker" : "background.js"
+    }
 }
     

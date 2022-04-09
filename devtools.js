@@ -10,7 +10,9 @@ chrome.devtools.panels.elements.createSidebarPane("My Sidebar",
         // sidebar.setHeight("8ex");
 })
 
-chrome.devtools.inspectedWindow.getResources(function(resources) {
-    console.log(resources)
-  })
+// chrome.devtools.inspectedWindow.getResources(function(resources) {
+//     console.log(resources)
+// })
+
+
   

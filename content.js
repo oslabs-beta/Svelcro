@@ -1,62 +1,44 @@
-console.log('SUPPLIES !!!!');
-
-// console.log('chrome: ', chrome);
-
-// console.log('chrome.dom: ', chrome.dom);
-//should the listener be in the background.js?? I HAVE no idea(Ming)
-
-
-
-
-// Listen for messages
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  console.log('messages?')
-  // If the received message has the expected format...
-  if (msg.text === 'report_back') {
-      // Call the specified callback, passing
-      // the web-page's DOM content as argument
-      sendResponse(document.all[0].outerHTML);
-      
-  }
-});
-
-//do we need to connect via port? 
-// let port = chrome.runtime.connect();
-
-// MING TEST AREA
-// Send Message to Background
-// chrome.runtime.sendMessage({name: "test message"}, async (response) => {
-
-//   console.log('WHY?!');
-
-//   const body = document.querySelector('body');
-
-//   console.log(body);
-  
-//   // await response;
-//   await console.log(response);
-//   // console.log(response.text);
-
-// })
-
-const body = document.querySelector('body');
-
-
 let getDOM = () => {
 
   const body = document.querySelector('body');
-  console.log(body);
+  // console.log(body);
   return body;
 
 }
 
-chrome.devtools.inspectedWindow.getResources(function(resources) {
-  console.log(resources)
-})
+let sending = chrome.runtime.sendMessage({
+  greeting: "Greeting from the content script"
+});
 
+var mutationObserver = new MutationObserver(function(mutations) {
+  console.log('mutation: ', mutations);
 
+  let HTMLbody = getDOM().outerHTML
 
+  // Everytime the DOM mutates, Send to background the body
+  chrome.runtime.sendMessage({
+    body: HTMLbody
+  });
 
-// setInterval( getDOM , 2500);
+  // TESTING SVELTE CAPTURE
+  // const svelteComponets = document.querySelectorAll(`[class^="svelte"]`)
+  // console.log(svelteComponets);
 
-// chrome.runtime.sendMessage('hello world');
+  // mutations.forEach(function(mutation) {
+  //   console.log(mutation);
+  // });
+});
+
+mutationObserver.observe(document.documentElement, {
+  // attributes: true,
+  // characterData: true,
+  childList: true,
+  subtree: true,
+  // attributeOldValue: true,
+  // characterDataOldValue: true
+});
+
+// TEST
+
+// const svelteComponets = document.querySelectorAll(`[class^="svelte"]`)
+// console.log(svelteComponets);

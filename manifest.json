@@ -2,19 +2,21 @@
     "name": "Svelcro",
     "version": "1.0",
     "minimum_chrome_version": "10.0",
-    "manifest_version": 3,
+    "manifest_version": 2,
     "devtools_page": "devtools.html",
+    "background": {
+        "scripts": ["background.js"]
+    },
     "permissions": [
         "contextMenus",
         "tabs",
-        "activeTab"
+        "activeTab",
+        "*://localhost/*"
     ],
     "content_scripts": [{
         "matches": ["<all_urls>"],
-        "js": ["content.js"]
+        "js": ["contentScript.js"]
     }],
-    "background": {
-        "service_worker" : "background.js"
-    }
+    "web_accessible_resources": ["./contentScript.js"]
 }
     

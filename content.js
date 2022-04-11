@@ -1,44 +1,46 @@
-let getDOM = () => {
+// let getDOM = () => {
 
-  const body = document.querySelector('body');
-  // console.log(body);
-  return body;
+//   const body = document.querySelector('body');
+//   // console.log(body);
+//   return body;
 
-}
+// }
 
-let sending = chrome.runtime.sendMessage({
-  greeting: "Greeting from the content script"
-});
+// let sending = chrome.runtime.sendMessage({
+//   greeting: "Greeting from the content script"
+// });
+// function start() {
+//   startTime = new Date();
+// }
+// function end() {
 
-var mutationObserver = new MutationObserver(function(mutations) {
-  console.log('mutation: ', mutations);
+// }
+// const svelteComponents = document.querySelectorAll(`[class^="svelte"]`)
 
-  let HTMLbody = getDOM().outerHTML
+// var mutationObserver = new MutationObserver(function(mutations) {
+//   // console.log('mutation: ', mutations);
 
-  // Everytime the DOM mutates, Send to background the body
-  chrome.runtime.sendMessage({
-    body: HTMLbody
-  });
+//   let HTMLbody = getDOM().outerHTML
 
-  // TESTING SVELTE CAPTURE
-  // const svelteComponets = document.querySelectorAll(`[class^="svelte"]`)
-  // console.log(svelteComponets);
+//   // Everytime the DOM mutates, Send to background the body
+//   chrome.runtime.sendMessage({
+//     body: HTMLbody
+//   });
 
-  // mutations.forEach(function(mutation) {
-  //   console.log(mutation);
-  // });
-});
+//   // TESTING SVELTE CAPTURE
 
-mutationObserver.observe(document.documentElement, {
-  // attributes: true,
-  // characterData: true,
-  childList: true,
-  subtree: true,
-  // attributeOldValue: true,
-  // characterDataOldValue: true
-});
+//   mutations.forEach(function(mutation) {
+//     console.log(mutation.target);
+//   });
+// });
 
-// TEST
+// mutationObserver.observe(svelteComponents, {
+//   // attributes: true,
+//   // characterData: true,
+//   childList: true,
+//   subtree: true,
+//   // attributeOldValue: true,
+//   // characterDataOldValue: true
+// });
 
-// const svelteComponets = document.querySelectorAll(`[class^="svelte"]`)
-// console.log(svelteComponets);
+// // TEST

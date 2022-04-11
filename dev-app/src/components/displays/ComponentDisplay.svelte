@@ -2,12 +2,14 @@
 // COMPONENT IMPORTS
 import ComponentHierarchy from '../ComponentHierarchy.svelte'
 import ComponentStats from '../ComponentStats.svelte'
+import ComponentTree from '../ComponentTree.svelte'
 
 </script>
 
 <div id="component-display">
   <ComponentHierarchy/>
   <ComponentStats/>
+  <ComponentTree/>
 </div>
 
 <style>

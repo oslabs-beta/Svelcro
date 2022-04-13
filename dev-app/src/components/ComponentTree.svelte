@@ -5,6 +5,8 @@
     import * as d3ChartRender from "./d3ChartRender";
     import * as d3TreeRender from "./d3TreeRender";
     import syntaxHighlight from "./syntaxHighlight";
+    import * as test from "./tree.js";
+    import * as horizon from "./horiztonalTree";
   
     // Refresh page
     let refreshPage = true;
@@ -25,10 +27,9 @@
     // Generate views
     const getData = tab => {
       const viewsRoot = document.getElementById("component-hierarchy");
-      console.log('VR IS', viewsRoot);
-      const statesRoot = document.getElementById("states-root");
-      const propsRoot = document.getElementById("props-root");
-      const chartRoot = document.getElementById("chart-root");
+      // const statesRoot = document.getElementById("states-root");
+      // const propsRoot = document.getElementById("props-root");
+      // const chartRoot = document.getElementById("chart-root");
       
       let i = 0;
       let componentNames = [];
@@ -358,31 +359,90 @@
   
           switch (tab) {
             case "tree":
-              viewsRoot.innerHTML = "";
-               chartRoot.innerHTML = "";
-              d3TreeRender.treeRender(templateStructured, d3, viewsRoot);
+              // viewsRoot.innerHTML = "";
+              //  chartRoot.innerHTML = "";
+              // d3TreeRender.treeRender(templateStructured, d3, viewsRoot);
+              const result = test.Tree(templateStructured)
+              console.log('result is', result);
+              viewsRoot.appendChild(result);
+              // var width = 960,
+              // horizon.BuildVerticaLTree(templateStructured, "#component-hierarchy")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               break;
-            case "chart":
-              viewsRoot.innerHTML = "";
-              chartRoot.innerHTML = "";
-              d3ChartRender.chartRender(
-                template,
-                d3,
-                chartRoot,
-                templateStructured,
-                collapse
-              );
-              break;
-            case "raw":
-              viewsRoot.innerHTML = "";
-              chartRoot.innerHTML = "";
-              statesRoot.innerHTML = "";
-              propsRoot.innerHTML = "";
-              const pre = document.createElement("pre");
-              const prettyJSON = JSON.stringify(componentTree, null, 2);
-              pre.innerHTML = syntaxHighlight(prettyJSON);
-              viewsRoot.appendChild(pre);
-              break;
+    //         case "chart":
+    //           viewsRoot.innerHTML = "";
+    //           chartRoot.innerHTML = "";
+    //           d3ChartRender.chartRender(
+    //             template,
+    //             d3,
+    //             chartRoot,
+    //             templateStructured,
+    //             collapse
+    //           );
+    //           break;
+    //         case "raw":
+    //           viewsRoot.innerHTML = "";
+    //           chartRoot.innerHTML = "";
+    //           statesRoot.innerHTML = "";
+    //           propsRoot.innerHTML = "";
+    //           const pre = document.createElement("pre");
+    //           const prettyJSON = JSON.stringify(componentTree, null, 2);
+    //           pre.innerHTML = syntaxHighlight(prettyJSON);
+    //           viewsRoot.appendChild(pre);
+    //           break;
           }
         }, 100);
       });

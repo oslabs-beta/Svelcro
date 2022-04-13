@@ -1,5 +1,5 @@
 <script>
-
+import * as d3TreeRender from "./d3TreeRender";
 </script>
 
 <div id="component-hierarchy">

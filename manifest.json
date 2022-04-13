@@ -7,6 +7,7 @@
     "background": {
         "scripts": ["background.js"]
     },
+    "content_security_policy":"script-src 'self' https://d3js.org/d3.v7.min.js; object-src 'self'",
     "permissions": [
         "contextMenus",
         "tabs",

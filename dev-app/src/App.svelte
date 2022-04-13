@@ -1,6 +1,7 @@
 <script>
 	// COMPONENT IMPORTS
 	import Nav from './components/Nav.svelte';
+	
 </script>
 
 <main>

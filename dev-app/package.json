@@ -7,6 +7,10 @@
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear"
   },
+  "moduleFileExtensions": [
+    "js",
+    "svelte"
+  ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
@@ -15,10 +19,16 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0"
+    "sinon-chrome": "^3.0.1",
+    "svelte": "^3.20.1",
+    "svelte-jester": "^1.0.5",
+    "svelte-preprocess": "^4.10.5"
   },
   "dependencies": {
+    "d3": "^7.4.4",
     "sirv-cli": "^2.0.0",
+    "svelte-compiler": "^1.0.1",
+    "svelte-preprocess": "^4.10.5",
     "svelte-spa-router": "^3.2.0"
   }
 }

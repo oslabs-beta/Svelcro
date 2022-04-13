@@ -15,12 +15,70 @@
     children.forEach(el => el === passedChild ? el.show() : el.noShow())
   };
 
+  let mainToBgPort;
+
+// connect devtool to inspected webpage
+function connect() {
+  // chrome.runtime.sendMessage({ body: "runContentScript" }, (response) => {});
+
+  mainToBgPort = chrome.runtime.connect(); // attempt to open port to background.js
+  // mainToBgPort.onMessage.addListener((msg, sender, sendResponse) => {
+  //   if (!snapshots.includes(msg.body)) {
+  //     const moment = [];
+  //     msg.body.componentStates.forEach((state) => {
+  //       const obj = {};
+  //       obj[state[2]] = state[1];
+  //       moment.push(obj);
+  //     });
+  //     snapshots = [...snapshots.slice(0, msg.body.cacheLength), moment];
+  //   }
+  // });
+  let connectButton = document.getElementById('connectButton');
+  connectButton.style.visibility = 'hidden';
+}
+
+// injects logic into inspected webpage's DOM
+function updateScript() {
+  mainToBgPort.postMessage({
+    body: 'runContentScript',
+  });
+  mainToBgPort.postMessage({
+    body: 'updateScript',
+    script: bundleResource,
+  });
+}
+
+// handles click and invokes connect() then updateScript()
+function handleClick() {
+  connect();
+  updateScript();
+}
+  
+
   const navItems = [
         {label: "Component"},
         {label: "Profiler"},
         {label: "Time Machine"},
     ];
 
+    
+  let bundleResource;
+  chrome.devtools.inspectedWindow.getResources((resources) => {
+    // search for bundle file, probably first thing in resources array with type 'script'
+    for (let i = 0; i < resources.length; i++) {
+      console.log('resources', resources)
+      if (resources[i].type === 'script') {
+        resources[i].getContent((content, encoding) => {
+          // console.log('content is', content)
+          bundleResource = content;
+          console.log('BUNDLE', bundleResource)
+        });
+        break;
+      }
+    }
+  });
+
+  
 
 </script>
 
@@ -34,6 +92,7 @@
   <button on:click={() => {componentShow(child)}}>Component Show</button>
   <button on:click={() => {componentShow(child1)}}>Profiler Show</button>
   <button on:click={() => {componentShow(child2)}}>Time-Machine Show</button>
+  <button id="connectButton" on:click={() => {handleClick()}}>Message Test</button>
   
 </nav>
 

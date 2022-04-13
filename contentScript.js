@@ -1,11 +1,28 @@
-const init = function() {
-  const injectElement = document.createElement('div');
-  injectElement.className = 'test';
-  injectElement.innerText = 'HELLO WE ARE TESTING';
-  document.body.appendChild(injectElement);
-}
+// import { current_component } from 'svelte/internal';
+// const init = function() {
+//   const injectElement = document.createElement('div');
+//   injectElement.className = 'test';
+//   injectElement.innerText = 'HELLO WE ARE TESTING';
+//   document.body.appendChild(injectElement);
+// }
 
-init();
+// init();
+
+
+// let messageListeners = false;
+
+// if (!messageListeners) {
+//   window.addEventListener(
+//     'message',
+//     (messageEvent) => {
+//       if (messageEvent.source === window && messageEvent.data.body !== 'TIME_TRAVEL') {
+//         chrome.runtime.sendMessage(messageEvent.data);
+//       }
+//     },
+//     false,
+//   );
+//   messageListeners = true;
+// }
 
 // chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 //   if (req.body === 'TIME_TRAVEL') {
@@ -16,7 +33,7 @@ init();
 //   if (req.body === 'UPDATE') {
 //     if (!window.tag) {
       window.tag = document.createElement('script');
-      const root = document.getElementById('root');
+      // const root = document.getElementById('root');
       // while (root.children.length) {
       //   root.children[0].remove();
       // }
@@ -38,6 +55,8 @@ init();
           });
         };
 
+      
+
         const allComps = [];
         const getAllComps = () => {
           const root2 = document.getElementById("root")
@@ -45,11 +64,20 @@ init();
           
         }
         getAllComps();
-     
+        window.document.addEventListener("click", function(){
+          console.log("PAGE LOADED")
+          
+        }, true)
+
+
+        // window.document.addEventListener("SvelteDOMSetData", (e) => {
+        //   console.log(e)
+        // })
 
   
         // add all Svelte components to array
-        window.document.addEventListener('SvelteRegisterComponent', (e) => {
+          window.document.addEventListener('SvelteRegisterComponent', (e) => {
+   
           components.push(e.detail.component);
           console.log('components', components)
           console.log('event', e)
@@ -121,7 +149,7 @@ init();
         );
         })();
         `;
-      document.head.append(window.tag);
+      document.children[0].append(window.tag);
 //     }
 //   }
 // });

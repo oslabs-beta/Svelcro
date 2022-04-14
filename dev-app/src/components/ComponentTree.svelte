@@ -5,10 +5,10 @@
     import * as d3ChartRender from "./d3ChartRender";
     import * as d3TreeRender from "./d3TreeRender";
     import syntaxHighlight from "./syntaxHighlight";
-    import * as test from "./tree.js";
-    import * as horizon from "./horiztonalTree";
     import ComponentHierarchy from "./ComponentHierarchy.svelte";
     import * as d3 from "d3";
+    import Hidden from './Hidden.svelte';
+    // import Tree from './Tree.svelte';
   
     // Refresh page
     let refreshPage = true;
@@ -448,31 +448,209 @@
               
                 console.log('LAST NODE', node);
               break;
-    //         case "chart":
-    //           viewsRoot.innerHTML = "";
-    //           chartRoot.innerHTML = "";
-    //           d3ChartRender.chartRender(
-    //             template,
-    //             d3,
-    //             chartRoot,
-    //             templateStructured,
-    //             collapse
-    //           );
-    //           break;
-    //         case "raw":
-    //           viewsRoot.innerHTML = "";
-    //           chartRoot.innerHTML = "";
-    //           statesRoot.innerHTML = "";
-    //           propsRoot.innerHTML = "";
-    //           const pre = document.createElement("pre");
-    //           const prettyJSON = JSON.stringify(componentTree, null, 2);
-    //           pre.innerHTML = syntaxHighlight(prettyJSON);
-    //           viewsRoot.appendChild(pre);
-    //           break;
+            case "chart":
+                   
+                    (function () {
+                      'use strict';
+                  }());
+                  let tree = d3.tree;
+                  let hierarchy = d3.hierarchy;
+                  let select = d3.select;
+                  let data = templateStructured;
+                    let MyTree = /** @class */ (function () {
+                function MyTree() {
+                    let _this = this;
+                    this.connector = function (d) {
+                        //curved 
+                        /*return "M" + d.y + "," + d.x +
+                          "C" + (d.y + d.parent.y) / 2 + "," + d.x +
+                          " " + (d.y + d.parent.y) / 2 + "," + d.parent.x +
+                          " " + d.parent.y + "," + d.parent.x;*/
+                        //straight
+                        return "M" + d.parent.y + "," + d.parent.x
+                            + "V" + d.x + "H" + d.y;
+                    };
+                    this.collapse = function (d) {
+                        if (d.children) {
+                            d._children = d.children;
+                            d._children.forEach(_this.collapse);
+                            d.children = null;
+                        }
+                    };
+                    this.click = function (d) {
+                        if (d.children) {
+                            d._children = d.children;
+                            d.children = null;
+                        }
+                        else {
+                            d.children = d._children;
+                            d._children = null;
+                        }
+                        _this.update(d);
+                    };
+                    this.update = function (source) {
+                        _this.width = 100;
+                        // Compute the new tree layout.
+                        let nodes = _this.tree(_this.root);
+                        let nodesSort = [];
+                        nodes.eachBefore(function (n) {
+                            nodesSort.push(n);
+                        });
+                        _this.height = Math.max(500, nodesSort.length * _this.barHeight + _this.margin.top + _this.margin.bottom);
+                        let links = nodesSort.slice(1);
+                        // Compute the "layout".
+                        nodesSort.forEach(function (n, i) {
+                            n.x = i * _this.barHeight;
+                        });
+                        d3.select('svg').transition()
+                            .duration(_this.duration)
+                            .attr("height", _this.height);
+                        // Update the nodes…
+                        let node = _this.svg.selectAll('g.node')
+                            .data(nodesSort, function (d) {
+                            return d.id || (d.id = ++this.i);
+                        });
+                        // Enter any new nodes at the parent's previous position.
+                        let nodeEnter = node.enter().append('g')
+                            .attr('class', 'node')
+                            .attr('transform', function () {
+                            return 'translate(' + source.y0 + ',' + source.x0 + ')';
+                        })
+                            .on('click', _this.click);
+                        nodeEnter.append('circle')
+                            .attr('r', 1e-6)
+                            .style('fill', function (d) {
+                            return d._children ? 'lightsteelblue' : '#fff';
+                        });
+                        nodeEnter.append('text')
+                            .attr('x', function (d) {
+                            return d.children || d._children ? 10 : 10;
+                        })
+                            .attr('dy', '.35em')
+                            .attr('text-anchor', function (d) {
+                            return d.children || d._children ? 'start' : 'start';
+                        })
+                            .text(function (d) {
+                            if (d.data.id.length > 20) {
+                                return d.data.id.substring(0, 20) + '...';
+                            }
+                            else {
+                                return d.data.id;
+                            }
+                        })
+                            .style('fill-opacity', 1e-6);
+                        nodeEnter.append('svg:title').text(function (d) {
+                            return d.data.id;
+                        });
+                        // Transition nodes to their new position.
+                        let nodeUpdate = node.merge(nodeEnter)
+                            .transition()
+                            .duration(_this.duration);
+                        nodeUpdate
+                            .attr('transform', function (d) {
+                            return 'translate(' + d.y + ',' + d.x + ')';
+                        });
+                        nodeUpdate.select('circle')
+                            .attr('r', 4.5)
+                            .style('fill', function (d) {
+                            return d._children ? 'lightsteelblue' : '#fff';
+                        });
+                        nodeUpdate.select('text')
+                            .style('fill-opacity', 1);
+                        // Transition exiting nodes to the parent's new position (and remove the nodes)
+                        let nodeExit = node.exit().transition()
+                            .duration(_this.duration);
+                        nodeExit
+                            .attr('transform', function (d) {
+                            return 'translate(' + source.y + ',' + source.x + ')';
+                        })
+                            .remove();
+                        nodeExit.select('circle')
+                            .attr('r', 1e-6);
+                        nodeExit.select('text')
+                            .style('fill-opacity', 1e-6);
+                        // Update the links…
+                        let link = _this.svg.selectAll('path.link')
+                            .data(links, function (d) {
+                            // return d.target.id;
+                            let id = d.id + '->' + d.parent.id;
+                            return id;
+                        });
+                        // Enter any new links at the parent's previous position.
+                        let linkEnter = link.enter().insert('path', 'g')
+                            .attr('class', 'link')
+                            .attr('d', function (d) {
+                            let o = { x: source.x0, y: source.y0, parent: { x: source.x0, y: source.y0 } };
+                            return _this.connector(o);
+                        });
+                        // Transition links to their new position.
+                        link.merge(linkEnter).transition()
+                            .duration(_this.duration)
+                            .attr('d', _this.connector);
+                        // // Transition exiting nodes to the parent's new position.
+                        link.exit().transition()
+                            .duration(_this.duration)
+                            .attr('d', function (d) {
+                            let o = { x: source.x, y: source.y, parent: { x: source.x, y: source.y } };
+                            return _this.connector(o);
+                        })
+                            .remove();
+                        // Stash the old positions for transition.
+                        nodesSort.forEach(function (d) {
+                            d.x0 = d.x;
+                            d.y0 = d.y;
+                        });
+                    };
+                }
+                MyTree.prototype.$onInit = function () {
+                    let _this = this;
+                    this.margin = { top: 20, right: 10, bottom: 20, left: 10 };
+                    this.width = 100 - this.margin.right - this.margin.left;
+                    this.height = 100 - this.margin.top - this.margin.bottom;
+                    this.barHeight = 20;
+                    this.barWidth = this.width;
+                    this.i = 0;
+                    this.duration = 750;
+                    this.tree = tree().size([this.width, this.height]);
+                    // this.tree = tree().nodeSize([0, 30]);
+                    this.tree = tree().nodeSize([0, 30]);
+                    this.root = this.tree(hierarchy(data));
+                    this.root.each(function (d) {
+                        d.id = d.id; //transferring name to a name variable
+                        d.id = _this.i; //Assigning numerical Ids
+                        _this.i++;
+                    });
+                    this.root.x0 = this.root.x;
+                    this.root.y0 = this.root.y;
+                    this.svg = select('#component-tree').append('svg')
+                        .attr('width', this.width + this.margin.right + this.margin.left)
+                        .attr('height', this.height + this.margin.top + this.margin.bottom)
+                        .append('g')
+                        .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+                    // this.root.children.forEach(this.collapse);
+                    this.update(this.root);
+                };
+                return MyTree;
+            }());
+            ;
+            let myTree = new MyTree();
+            console.log('CHART TREE', myTree)
+            // viewsRoot.appendChild(myTree);
+
+            const test = myTree.$onInit(); 
+                   
+
+
+              break;
           }
         }, 100);
       });
     };
+
+    const componentShow = (passedChild) => {
+    const children = [child, child1, child2];
+    children.forEach(el => el === passedChild ? el.show() : el.noShow())
+  };
 
   </script>
  
@@ -480,15 +658,13 @@
     
   <div id="component-tree-display">
     <nav class="header" id="views-navbar">
-      <button on:click={() => getData('tree')}>Tree</button>
-      <button on:click={() => getData('chart')}>Chart</button>
-      <button on:click={() => getData('raw')}>Raw</button>
-
+      <button on:click={() => getData('tree')}>TREE</button>
+      <button on:click={() => getData('chart')}>HIERARCHY</button>
     </nav>
     <br>
-
   </div>
 
+  <!-- <Tree {templateStructured} /> -->
 
 
   <style>
@@ -508,10 +684,12 @@
     /* TEXT COLOR */
     color: rgba(245, 245, 245, 0.543);
   }
+  
   .header {
     display: flex;
     /* flex-direction: column; */
     justify-items: center;
+    width: 100%;
   }
     #load-screen {
       position: fixed;
@@ -609,6 +787,10 @@
       box-sizing: content-box;
     }
     
+
+
+
+
 
   </style>
   

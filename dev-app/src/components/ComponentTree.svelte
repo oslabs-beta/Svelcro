@@ -394,17 +394,10 @@
               nodes = treemap(nodes);
               console.log('nodes', nodes)
 
-              //check if a D3 tree is already present
-              // if so, replace tree, instead of appending tree
-              if (!d3.select("#component-tree").empty()) {
-                console.log('hit')
-                d3.select("#component-tree").remove()
-              };
               // append the svg obgect to the body of the page
               // appends a 'group' element to 'svg'
               // moves the 'group' element to the top left margin
-              var svg = d3.select("#component-tree-display").append("svg")
-                    .attr('id', 'component-tree')
+              var svg = d3.select("#component-tree").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom),
                   g = svg.append("g")
@@ -428,7 +421,7 @@
               // adds each node as a group
               var node = g.selectAll(".node")
                   .data(nodes.descendants())
-                  .enter().append("g")
+                .enter().append("g")
                   .attr("class", function(d) { 
                     return "node" + 
                       (d.children ? " node--internal" : " node--leaf"); })
@@ -447,6 +440,23 @@
                 .text(function(d) { return d.data.id; });
               
                 console.log('LAST NODE', node);
+
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               break;
     //         case "chart":
     //           viewsRoot.innerHTML = "";
@@ -478,7 +488,7 @@
  
     
     
-  <div id="component-tree-display">
+  <div id="component-tree">
     <nav class="header" id="views-navbar">
       <button on:click={() => getData('tree')}>Tree</button>
       <button on:click={() => getData('chart')}>Chart</button>

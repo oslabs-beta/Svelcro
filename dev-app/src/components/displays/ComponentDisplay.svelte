@@ -7,9 +7,9 @@ import ComponentTree from '../ComponentTree.svelte'
 </script>
 
 <div id="component-display">
-  <ComponentHierarchy/>
-  <ComponentStats/>
   <ComponentTree/>
+  <!-- <ComponentHierarchy/> -->
+  <ComponentStats/>
 </div>
 
 <style>

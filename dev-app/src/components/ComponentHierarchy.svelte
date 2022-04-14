@@ -1,10 +1,10 @@
 <script>
 import * as d3TreeRender from "./d3TreeRender";
+
+
 </script>
 
-<div id="component-hierarchy">
-  component-hierarchy
-</div>
+
 
 <style>
 
@@ -15,5 +15,6 @@ import * as d3TreeRender from "./d3TreeRender";
   resize: horizontal;
   overflow: auto;
 }
+
 
 </style>

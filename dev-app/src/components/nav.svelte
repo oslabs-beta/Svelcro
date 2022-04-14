@@ -89,9 +89,9 @@ function handleClick() {
   <button on:click={() => {componentShow(item.feat)}}>{item.label}</button>
   {/each} -->
 
-  <button on:click={() => {componentShow(child)}}>Component Show</button>
-  <button on:click={() => {componentShow(child1)}}>Profiler Show</button>
-  <button on:click={() => {componentShow(child2)}}>Time-Machine Show</button>
+  <button on:click={() => {componentShow(child)}}>Components</button>
+  <button on:click={() => {componentShow(child1)}}>Profiler</button>
+  <button on:click={() => {componentShow(child2)}}>Time-Machine</button>
   
 </nav>
 
@@ -117,7 +117,7 @@ function handleClick() {
     display: flex;
     justify-content: space-evenly;
 
-    height: 8%;
+    height: 6%;
   }
 
   button {
@@ -125,6 +125,7 @@ function handleClick() {
     cursor: pointer;
     border: none;
     width: 100%;
+    /* font-size: 18px; */
 
     /* TEXT COLOR */
     color: rgba(245, 245, 245, 0.543);

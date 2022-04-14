@@ -92,7 +92,6 @@ function handleClick() {
   <button on:click={() => {componentShow(child)}}>Component Show</button>
   <button on:click={() => {componentShow(child1)}}>Profiler Show</button>
   <button on:click={() => {componentShow(child2)}}>Time-Machine Show</button>
-  <button id="connectButton" on:click={() => {handleClick()}}>Message Test</button>
   
 </nav>
 

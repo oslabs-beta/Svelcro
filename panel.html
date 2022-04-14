@@ -11,6 +11,36 @@
 	  <link rel='stylesheet' href='./dev-app/public/global.css'>
     <script src="https://d3js.org/d3.v7.min.js"></script>
   </head>
+  <style> /* set the CSS */
+    .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 3px;
+    }
+    
+    .node {
+      font: 12px sans-serif; 
+    color: white;
+    }
+    
+    .node--internal text {
+      fill: white;
+    }
+    .node--leaf text {
+      fill: white;
+    }
+
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 2px;
+    }
+    /* .node--leaf text {
+      color: white;
+    } */
+    
+    
+    </style>
   <body>
     <div class="analysis-output"></div>
     <!-- <script src="panel.js"></script> -->

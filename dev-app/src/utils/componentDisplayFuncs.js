@@ -1,13 +1,8 @@
 import { parse, walk } from 'svelte/compiler';
-import exploreCompositeDataType from "../components/exploreCompositeDataType.js";
+import exploreCompositeDataType from "./exploreCompositeDataType.js";
 import * as d3 from "d3";
 
 export const getData = tab => {
-  const viewsRoot = document.getElementById("component-hierarchy");
-  // const statesRoot = document.getElementById("states-root");
-  // const propsRoot = document.getElementById("props-root");
-  // const chartRoot = document.getElementById("chart-root");
-  
   let i = 0;
   let componentNames = [];
   const D3PreTree = [];
@@ -21,7 +16,6 @@ export const getData = tab => {
     const state = {};
     const props = {};
     const elementOfD3PreTree = {};
-    // console.log('AST ARG IS', ast.instance.content);
 
     ast.instance.content.body.forEach((el) => {
       // Find dependencies (via import statements) of current svelte component/file and store the dep in the node for said svelte component/file
@@ -40,9 +34,6 @@ export const getData = tab => {
 
     node[componentNames[i]] = Object.keys(dependencies).length ? dependencies : {};
 
-    // console.log("CHECKING ELS", dependencies)
-    // console.log("NODE", node);
-
     Object.defineProperty(node[componentNames[i]], "Props", {
       value: props,
       configurable: true,
@@ -52,9 +43,6 @@ export const getData = tab => {
 
     walk(ast, {
       enter(ASTnode, parent, prop, index) {
-        // console.log('inside of walk func')
-        // console.log('AST Node inside walk', ASTnode)
-        // console.log('Parent inside walk', parent)
         if (ASTnode.hasOwnProperty("declarations")) {
           // For variable declarations that either have not been initialized or have a value that is equal to "null"
           if (!ASTnode.declarations[0].init) {
@@ -80,9 +68,6 @@ export const getData = tab => {
           });
         }
       },
-      leave(ASTnode, parent, prop, index) {
-        // doSomethingElse(ASTnode) if required
-      }
     });
 
     if (Object.keys(node).length) {
@@ -164,15 +149,15 @@ export const getData = tab => {
   chrome.devtools.inspectedWindow.getResources(resources => {
     const arrSvelteFiles = resources.filter(file =>file.url.includes(".svelte"));
     console.log("arrSvelteFiles: ", arrSvelteFiles);
-    componentNames = arrSvelteFiles.map(svelteFile => `<${svelteFile.url.slice(7, svelteFile.url.indexOf("/"))} />`);
-    // componentNames = arrSvelteFiles.map(svelteFile => svelteFile);
-    //console.log("please work:", componentNames)
+    componentNames = arrSvelteFiles.map(svelteFile => `<${svelteFile.url.slice(
+      svelteFile.url.lastIndexOf("/") + 1,
+      svelteFile.url.lastIndexOf(".")
+    )} />`);
 
     arrSvelteFiles.forEach(svelteFile => {
       svelteFile.getContent(source => {
         if (source) {
           const ast = parse(source);
-          console.log("AST:", ast)
           createNode(ast);
 
           if (i === componentNames.length - 1) {
@@ -197,7 +182,6 @@ export const getData = tab => {
         AST.push(parse(content));
       });
     }
-    //console.log('ALL ASTS:', AST);
 
     /* ---- D3 ---- */
     // executes after svelte.parse is completed
@@ -245,8 +229,7 @@ export const getData = tab => {
           }
         }
       }
-      console.log("AST: ", AST)
-
+      
       // modified the url array to match with AST array and then combined into
       // bigData object
       for (let i = 0; i < urls.length; i++) {
@@ -259,7 +242,6 @@ export const getData = tab => {
         }
         bigData[urls[i].url] = AST[i];
       }
-      console.log('big data', bigData)
 
       // iterate through bigData and made parent/child object and pushed into componentTemplate array
       let componentTemplate = [];
@@ -278,7 +260,6 @@ export const getData = tab => {
           }
         }
       }
-      console.log("component template:", componentTemplate)
       componentChildren(bigData);
 
       // added special obj for the top parent component for D3 stratifyy function to successfully create relevant array
@@ -337,21 +318,6 @@ export const getData = tab => {
 
       switch (tab) {
         case "tree":
-          //FROM SVELTE SIGHT
-          // viewsRoot.innerHTML = "";
-          //  chartRoot.innerHTML = "";
-          // d3TreeRender.treeRender(templateStructured, d3, viewsRoot);
-
-          //WORKING HORIZONTAL TREE
-          // const result = test.Tree(templateStructured)
-          // console.log('result is', result);
-          // viewsRoot.appendChild(result);
-          // var width = 960,
-
-          //DONT WORK
-          // horizon.BuildVerticaLTree(templateStructured, "#component-hierarchy")
-          // <ComponentHierarchy/>
-
           var margin = {top: 40, right: 90, bottom: 50, left: 90},
           width = 660 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
@@ -367,16 +333,13 @@ export const getData = tab => {
 
           // maps the node data to the tree layout
           nodes = treemap(nodes);
-          console.log('nodes', nodes)
 
           //check if a D3 tree is already present
           // if so, replace tree, instead of appending tree
           if (!d3.select("#component-cur").empty()) {
             d3.select("#component-cur").remove()
           };
-          // append the svg obgect to the body of the page
-          // appends a 'group' element to 'svg'
-          // moves the 'group' element to the top left margin
+  
           var svg = d3.select("#component-tree-display").append("svg")
                 .attr('id', 'component-cur')
                 .attr("width", width + margin.left + margin.right)
@@ -561,7 +524,7 @@ export const getData = tab => {
                     link.merge(linkEnter).transition()
                         .duration(_this.duration)
                         .attr('d', _this.connector);
-                    // // Transition exiting nodes to the parent's new position.
+                    // Transition exiting nodes to the parent's new position.
                     link.exit().transition()
                         .duration(_this.duration)
                         .attr('d', function (d) {
@@ -613,13 +576,8 @@ export const getData = tab => {
         }());
         ;
         let myTree = new MyTree();
-        console.log('CHART TREE', myTree)
-        // viewsRoot.appendChild(myTree);
 
         const test = myTree.$onInit(); 
-               
-
-
           break;
       }
     }, 100);

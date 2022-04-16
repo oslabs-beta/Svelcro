@@ -1,7 +1,7 @@
 <script>
 // COMPONENT IMPORTS
-import ProfilerGraphs from "../ProfilerGraphs.svelte";
-import ProfilerStats from '../ProfilerStats.svelte'
+import ProfilerGraphs from "../profiler/ProfilerGraphs.svelte";
+import ProfilerStats from '../profiler/ProfilerStats.svelte'
 
 </script>
 

@@ -1,14 +1,12 @@
 <script>
 // COMPONENT IMPORTS
-import ComponentHierarchy from '../ComponentHierarchy.svelte'
-import ComponentStats from '../ComponentStats.svelte'
-import ComponentTree from '../ComponentTree.svelte'
+import ComponentStats from '../tree_hierarchy/ComponentStats.svelte';
+import ComponentTree from '../tree_hierarchy/ComponentTree.svelte';
 
 </script>
 
 <div id="component-display">
   <ComponentTree/>
-  <!-- <ComponentHierarchy/> -->
   <ComponentStats/>
 </div>
 
@@ -21,7 +19,5 @@ import ComponentTree from '../ComponentTree.svelte'
 
   border: 1px solid rgb(1, 1, 1);
 }
-
-
 
 </style>

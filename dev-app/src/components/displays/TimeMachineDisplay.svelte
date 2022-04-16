@@ -1,7 +1,7 @@
 <script>
 // COMPONENT IMPORTS
-import TimeTransport from '../TimeTransport.svelte'
-import TimeStats from '../TimeStats.svelte'
+import TimeTransport from '../time_machine/TimeTransport.svelte'
+import TimeStats from '../time_machine/TimeStats.svelte'
 
 </script>
 
@@ -19,8 +19,6 @@ import TimeStats from '../TimeStats.svelte'
 
   border: 1px solid rgb(1, 1, 1);
 }
-
-
 
 </style>
   

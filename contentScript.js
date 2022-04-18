@@ -1,11 +1,11 @@
 
-window.tag = document.createElement('script');
+// window.tag = document.createElement('script');
 // const root = document.getElementById('root');
 // while (root.children.length) {
 //   root.children[0].remove();
 // }
 
-window.tag.text = `(function () { 
+(function () { 
   'use strict';
 
   const parse = (event) => JSON.parse(JSON.stringify(event));
@@ -99,21 +99,21 @@ window.tag.text = `(function () {
 
 
 
-  window.addEventListener(
-    "message",
-    (messageEvent) => {
-      if (messageEvent.data.body === 'TIME_TRAVEL') {
-        const i = messageEvent.data.ctxIndex;
-        lastIndex = i;
-        if (cacheState[i]) {
-          cacheState[i].forEach((componentState) => {
-            componentState[0].$inject_state(componentState[1])
-          })
-        }
-      }
-    },
-    false
-  );
+  // window.addEventListener(
+  //   "message",
+  //   (messageEvent) => {
+  //     if (messageEvent.data.body === 'TIME_TRAVEL') {
+  //       const i = messageEvent.data.ctxIndex;
+  //       lastIndex = i;
+  //       if (cacheState[i]) {
+  //         cacheState[i].forEach((componentState) => {
+  //           componentState[0].$inject_state(componentState[1])
+  //         })
+  //       }
+  //     }
+  //   },
+  //   false
+  // );
   })();
-  `;
-document.children[0].append(window.tag);
+  
+

@@ -2,13 +2,14 @@
     "name": "Svelcro",
     "version": "1.0",
     "minimum_chrome_version": "10.0",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "devtools_page": "devtools.html",
     "background": {
-        "scripts": ["background.js"]
+        "service_worker": "background.js"
     },
-    "content_security_policy":"script-src 'self' https://d3js.org/d3.v7.min.js; object-src 'self'",
-    "permissions": [
+    "content_security_policy": {
+        "extension pages": "script-src 'self' 'nonce-...' https://d3js.org/d3.v7.min.js; object-src 'self'"},
+    "permissions": [ 
         "contextMenus",
         "tabs",
         "activeTab",
@@ -16,8 +17,13 @@
     ],
     "content_scripts": [{
         "matches": ["<all_urls>"],
-        "js": ["contentScript.js"]
+        "js": ["document_start.js"],
+        "run_at": "document_start"
     }],
-    "web_accessible_resources": ["./contentScript.js"]
+    "web_accessible_resources": [{
+        "resources": ["contentScript.js"],
+        "matches": ["<all_urls>"]
+      }]
+    
 }
     

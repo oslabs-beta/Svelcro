@@ -153,6 +153,7 @@ export const getData = tab => {
       svelteFile.url.lastIndexOf("/") + 1,
       svelteFile.url.lastIndexOf(".")
     )} />`);
+    console.log('component names:', componentNames);
 
     arrSvelteFiles.forEach(svelteFile => {
       svelteFile.getContent(source => {

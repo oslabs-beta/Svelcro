@@ -41,14 +41,61 @@
   //   console.log(e)
   // })
 
-
+  // object to hold render counts by component
+  const compCounts = {};
+  let nextId = 1;
   // add all Svelte components to array
     window.document.addEventListener('SvelteRegisterComponent', (e) => {
+      
+      let isFirstAfterUpdate = true;
+      
+      const { component, tagName } = e.detail;
 
-    components.push(e.detail.component);
-    console.log('components', components)
-    console.log('event', e)
-  })
+      component.$$['id'] = tagName + nextId;
+      nextId++;
+      const curId = component.$$.id;
+      compCounts[curId] = 1;
+      components.push(e.detail.component)
+
+      console.log('is the id there?', component.$$)
+      console.log('components', components)
+      // console.log('event', e)
+
+      
+
+    console.log('VERY FIRST`:', window.performance.now())
+    
+    component.$$.before_update.push(() => {
+      //////
+      // const curId = component.$$.ctx[0].id;
+      // console.log( tagName, ' ' ,component.$$.ctx[0].id, 'beforeUpdate');
+      // console.log(Date.now())
+      console.log('BEFORE IS:', window.performance.now())
+      // if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
+      // else compCounts[curId] = 1;
+
+      console.log("compCounts", compCounts);
+    });
+
+    component.$$.after_update.push(() => {
+      if (isFirstAfterUpdate) { return isFirstAfterUpdate = false;}
+      const curId = component.$$.id;
+      console.log( tagName, ' ' , curId , 'AfterUpdate');
+      // console.log(Date.now())
+      // console.log('AFTER IS:', window.performance.now())
+      //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
+      // else compCounts[curId] = 1;
+      compCounts[curId] += 1;
+     
+      
+    });
+
+    // let performance = window.performance;
+    // let performanceEntries = performance.getEntriesByType('paint');
+    // console.log('performance:', performanceEntries)
+    // performanceEntries.forEach( (performanceEntry, i, entries) => {
+    //   console.log("The time to " + performanceEntry.name + " was " + performanceEntry.startTime + " milliseconds.")})
+})
 
 
   

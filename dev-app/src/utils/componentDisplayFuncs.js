@@ -23,7 +23,10 @@ export const getData = tab => {
         el.type === "ImportDeclaration" &&
         el.source.value.includes(".svelte")
       ) {
-        const componentName = `<${el.source.value.slice(2, el.source.value.length - 7)} />`;
+        const componentName = `<${el.source.value.slice(
+          el.source.value.lastIndexOf("/") + 1,
+          el.source.value.lastIndexOf(".")
+        )} />`;
         dependencies[componentName] = {};
       } 
       // Find props (via export statements) of current svelte component/file and store the props in the node for said svelte component/file

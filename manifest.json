@@ -12,8 +12,7 @@
     "permissions": [ 
         "contextMenus",
         "tabs",
-        "activeTab",
-        "*://localhost/*"
+        "activeTab"
     ],
     "content_scripts": [{
         "matches": ["<all_urls>"],
@@ -23,7 +22,10 @@
     "web_accessible_resources": [{
         "resources": ["contentScript.js"],
         "matches": ["<all_urls>"]
-      }]
+    }],
+    "externally_connectable": {
+        "matches": ["http://localhost/*"]
+    }
     
 }
     

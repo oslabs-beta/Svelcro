@@ -3,7 +3,11 @@
 // while (root.children.length) {
 //   root.children[0].remove();
 // }
-
+// console.log('contentScript chrome/runtime.id: ',chrome.runtime.id);
+let extensionURL = document.querySelector('#injected-script').src;
+// console.log('Test: ', extensionURL);
+// console.log('Lastindex: ',extensionURL.lastIndexOf('/'));
+// console.log(extensionURL.slice( 19 ,extensionURL.lastIndexOf('/')))
 (function () { 
   'use strict';
 
@@ -66,7 +70,7 @@
         target[key] = value;
 
         // Send render count records to dev Tools
-        let editorExtensionId = 'bdbhodpgbllbabnnafknafigdemaahdd';
+        let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
         chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_RENDER', data: JSON.stringify(target) });
         return true;
     }
@@ -117,6 +121,7 @@
       
       
     });
+
 
     // let performance = window.performance;
     // let performanceEntries = performance.getEntriesByType('paint');

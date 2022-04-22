@@ -49,7 +49,7 @@
 
   <button on:click={() => {componentShow(child)}}>Components</button>
   <button on:click={() => {componentShow(child1)}}>Profiler</button>
-  <button on:click={() => {componentShow(child2)}}>Time-Machine</button>
+  <!-- <button on:click={() => {componentShow(child2)}}>Time-Machine</button> -->
   
 </nav>
 

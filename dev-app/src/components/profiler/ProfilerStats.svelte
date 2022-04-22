@@ -1,24 +1,25 @@
 <script>
   // COMPONENT IMPORTS
 
-  const compCountRecord = {};
+  // const compCountRecord = {};
 
-  chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-    if (msg.body === "UPDATE_RENDER") {
-      const { data } = msg;
-      console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
+  // chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
+  //   if (msg.body === "UPDATE_RENDER") {
+  //     const { data } = msg;
+  //     console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
 
-      const tempObj = { ...JSON.parse(data) };
-      for (const property in tempObj) {
-        compCountRecord[property] = tempObj[property];
-      }
+  //     const tempObj = { ...JSON.parse(data) };
+  //     for (const property in tempObj) {
+  //       compCountRecord[property] = tempObj[property];
+  //     }
 
-      console.log("compCountRecord: ", compCountRecord);
-    } else if (msg.body) {
-      console.log("recieving at Dev Tools! Coming from ", body);
-    }
-    return true;
-  });
+  //     console.log("compCountRecord: ", compCountRecord);
+  //   } else if (msg.body) {
+  //     console.log("recieving at Dev Tools! Coming from ", body);
+  //   }
+  //   return true;
+  // });
+
 </script>
 
 <div id="profiler-Stats">
@@ -35,4 +36,5 @@
     width: 50%;
     height: 100%;
   }
+  
 </style>

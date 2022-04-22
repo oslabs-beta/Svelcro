@@ -78,6 +78,7 @@ let extensionURL = document.querySelector('#injected-script').src;
   // let start = window.performance.now();
   // add all Svelte components to array
   let start;
+  let first = true;
   window.document.addEventListener('SvelteRegisterComponent', (e) => {
     start = window.performance.now();
     console.log('component rerendered:', start)
@@ -95,15 +96,17 @@ let extensionURL = document.querySelector('#injected-script').src;
 
     // console.log('is the id there?', component.$$)
     // console.log('components', components)
-    console.log('current components:', component)
+    // console.log('current components:', component)
     // console.log('event', e)
+    if (first) {
+      component.$$.on_mount.push(() => {
+        console.log('component is:', component.$$.id, 'first render is:', window.performance.now() - start);
+      })
+    }
 
-    
-    //CONSOLE LOG HERE BC A COMPONENT HAS BEEN RERENDERED
-    // console.log('component rerendered:', window.performance.now())
-    // console.log('VERY FIRST`:', window.performance.now())
-    //how to reset window.perforamnce.now??? starting from zero 
-    
+
+
+    console.log('current components:', component)
     component.$$.before_update.push(() => {
       let time = window.performance.now()
       component.$$.before_update.time = time;
@@ -132,8 +135,6 @@ let extensionURL = document.querySelector('#injected-script').src;
       //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
       // else compCounts[curId] = 1;
       compCounts[curId] += 1;
-      
-      
     });
 
 

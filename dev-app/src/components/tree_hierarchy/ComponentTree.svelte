@@ -30,6 +30,7 @@
     display: flex;
     justify-content: space-evenly;
     height: 4%;
+    width: 100%;
   }
 
   button {

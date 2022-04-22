@@ -2,7 +2,19 @@ import { parse, walk } from 'svelte/compiler';
 import exploreCompositeDataType from "./exploreCompositeDataType.js";
 import * as d3 from "d3";
 
-export const getData = tab => {
+// chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
+//   if (msg.header === "UPDATE_RENDER") {
+
+//     console.log("recieving at component Display Funcs!!");
+
+//   } 
+//   return true;
+// });
+
+export const getData = (tab, registerComps) => {
+  // RANKIN/MING TEST
+  console.log('registerComps', registerComps);
+
   let i = 0;
   let componentNames = [];
   const D3PreTree = [];
@@ -147,6 +159,16 @@ export const getData = tab => {
       createTree(arr);
     }
   }
+
+  const filterTree = (compRecord, tempStructure) => {
+    // if no children, return
+    // console.log('with node in path:', tempStructure.node.children)
+    console.log('w/o node in path:', tempStructure.children)
+    // get rid of any children that arent present in compRecord
+    // recurse with existing children
+  };
+
+  
 
   // Get resources of inspected program and generate views
   chrome.devtools.inspectedWindow.getResources(resources => {
@@ -319,6 +341,8 @@ export const getData = tab => {
         })(componentTemplate);
         console.log("template structure: ", templateStructured); 
 
+        // RANKIN/MING TEST
+        filterTree(registerComps, templateStructured);
 
       switch (tab) {
         case "tree":

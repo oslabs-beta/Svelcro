@@ -5,8 +5,30 @@
     let compInstanceRecord = {};
 
     chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-    if (msg.body === "UPDATE_RENDER") {
+      
+    if (msg.body === "UPDATE_INSTANCE") {
       const { data, components } = msg;
+      console.log('components in UPDATE_INSTANCE: ', JSON.parse(components))
+     
+      // Updating Instance
+      for (const key in compInstanceRecord) {
+        delete compInstanceRecord[key];
+      }
+      const tempObj = { ...JSON.parse(data) };
+      console.log("data in UPDATE_INSTANCE: ", tempObj )
+      for (const property in tempObj) {
+        compInstanceRecord[property] = tempObj[property];
+      }
+
+      // Updating Component Record
+      compRecord = components;
+    }
+    return true;
+  });
+
+  chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
+    if (msg.body === "UPDATE_RENDER") {
+      const { data } = msg;
       console.log("compInstanceRecord: ", compInstanceRecord);
      
       // Updating Instance
@@ -21,11 +43,9 @@
 
       // Updating Component Record
       compRecord = components;
-
-      
     }
-    return true;
   });
+  
   
 </script>
  

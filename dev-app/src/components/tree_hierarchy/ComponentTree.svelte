@@ -1,6 +1,31 @@
 <script>
   
     import { getData } from '../../utils/componentDisplayFuncs';
+
+    let compInstanceRecord = {};
+
+    chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
+    if (msg.body === "UPDATE_RENDER") {
+      const { data, components } = msg;
+      console.log("compInstanceRecord: ", compInstanceRecord);
+     
+      // Updating Instance
+      for (const key in compInstanceRecord) {
+        delete compInstanceRecord[key];
+      }
+      const tempObj = { ...JSON.parse(data) };
+      console.log("data in UPDATE_RENDER: ", tempObj )
+      for (const property in tempObj) {
+        compInstanceRecord[property] = tempObj[property];
+      }
+
+      // Updating Component Record
+      compRecord = components;
+
+      
+    }
+    return true;
+  });
   
 </script>
  
@@ -8,7 +33,7 @@
     
   <div id="component-tree-display">
     <nav class="header" id="views-navbar">
-      <button on:click={() => getData('tree')}>TREE</button>
+      <button on:click={() => getData('tree', compInstanceRecord)}>TREE</button>
       <button on:click={() => getData('chart')}>HIERARCHY</button>
     </nav>
     <br>

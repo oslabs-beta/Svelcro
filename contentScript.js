@@ -69,6 +69,7 @@ let extensionURL = document.querySelector('#injected-script').src;
         console.log(`${key} set to ${value}`);
         target[key] = value;
 
+        console.log(target)
         // Send render count records to dev Tools
         let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
         chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_RENDER', data: JSON.stringify(target) });

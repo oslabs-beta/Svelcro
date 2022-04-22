@@ -76,6 +76,18 @@ let extensionURL = document.querySelector('#injected-script').src;
         return true;
     }
   });
+
+  const compInstance = new Proxy({}, {
+    set: function (target, key, value) {
+        target[key] = value;
+
+        // Send render count records to dev Tools
+        let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
+        console.log('extension id', editorExtensionId)
+        chrome.runtime.sendMessage(editorExtensionId, { header: "UPDATE_INSTANCE", data: JSON.stringify(target), components: {'components': components} });
+        return true;
+    }
+  });
   // let start = window.performance.now();
   // add all Svelte components to array
   let start;

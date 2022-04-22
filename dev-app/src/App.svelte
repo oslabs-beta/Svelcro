@@ -5,8 +5,8 @@
   // MING TEST
   //   import { current_component } from "svelte/internal";
 
-  const compCountRecord = {};
-  const compInstanceRecord = {};
+  // const compCountRecord = {};
+  // const compInstanceRecord = {};
 
   //   chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
   //     if (msg.header === "UPDATE_RENDER") {

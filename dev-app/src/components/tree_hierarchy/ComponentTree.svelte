@@ -7,7 +7,7 @@
   chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
     if (msg.header === "UPDATE_INSTANCE") {
       const { data, components } = msg;
-
+      console.log("compInstanceRecord: ", compInstanceRecord);
       // Updating Instance
       for (const key in compInstanceRecord) {
         delete compInstanceRecord[key];
@@ -18,9 +18,9 @@
       }
 
       // Updating Component Record
-      compRecord = [...components];
+      compRecord = components;
 
-      console.log("compInstanceRecord: ", compInstanceRecord);
+      
     }
     return true;
   });

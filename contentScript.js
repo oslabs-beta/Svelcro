@@ -34,11 +34,6 @@ let extensionURL = document.querySelector('#injected-script').src;
     
   }
   getAllComps();
-  // MING TEST
-  window.document.addEventListener("click", function(){
-    console.log('nodes: ', nodes );
-    
-  }, true)
 
   
 
@@ -50,11 +45,7 @@ let extensionURL = document.querySelector('#injected-script').src;
   // object to hold render counts by component
   // const compCounts = {};
   let nextId = 1;
-  // MING TEST
 
-  const nodes = new Map();
-  const root = { children: [] };
-  nodes.set(undefined, root);
 
   // Proxy object that trigger function when property values are changed
   const compInstance = new Proxy({}, {
@@ -63,6 +54,7 @@ let extensionURL = document.querySelector('#injected-script').src;
 
         // Send render count records to dev Tools
         let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
+        console.log('extension id', editorExtensionId)
         chrome.runtime.sendMessage(editorExtensionId, { header: "UPDATE_INSTANCE", data: JSON.stringify(target), components: {'components': components} });
         return true;
     }
@@ -76,6 +68,7 @@ let extensionURL = document.querySelector('#injected-script').src;
 
         // Send render count records to dev Tools
         let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
+        console.log('components in content script', components)
         chrome.runtime.sendMessage(editorExtensionId, { header: "UPDATE_RENDER", body: {'components': components}, data: JSON.stringify(target) });
         return true;
     }
@@ -92,6 +85,7 @@ let extensionURL = document.querySelector('#injected-script').src;
     
     const { component, tagName } = e.detail;
 
+    // Assign an id to each Svelte component
     component.$$['id'] = tagName + nextId;
     nextId++;
     const curId = component.$$.id;
@@ -104,6 +98,7 @@ let extensionURL = document.querySelector('#injected-script').src;
     } else {
       compInstance[tagName] += 1;
     }
+    console.log('comp instance in Register Comp: ', compInstance)
     
 
     // console.log('is the id there?', component.$$)
@@ -143,7 +138,7 @@ let extensionURL = document.querySelector('#injected-script').src;
       // if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
       // else compCounts[curId] = 1;
 
-      // console.log("compCounts", compCounts);
+      console.log("compCounts before update", compCounts);
     });
 
     component.$$.after_update.push(() => {
@@ -154,13 +149,13 @@ let extensionURL = document.querySelector('#injected-script').src;
       // let rendertime = now - component.$$.before_update.time;
       if (isFirstAfterUpdate) { return isFirstAfterUpdate = false;}
     
-      console.log( tagName, ' ' , curId , 'render time is is:', rendertime);
+      // console.log( tagName, ' ' , curId , 'render time is is:', rendertime);
       // console.log(Date.now())
       // console.log('AFTER IS:', window.performance.now())
       //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
       // else compCounts[curId] = 1;
       compCounts[curId] += 1;
-      
+      console.log("compCounts before update", compCounts)
       
     });
 
@@ -171,16 +166,6 @@ let extensionURL = document.querySelector('#injected-script').src;
     // performanceEntries.forEach( (performanceEntry, i, entries) => {
     //   console.log("The time to " + performanceEntry.name + " was " + performanceEntry.startTime + " milliseconds.")})
 
-
-
-    // MING TEST
-    
-    let node = nodes.get(component);
-    if (!node) {
-      node = { children: [] };
-      nodes.set(component, node);
-    }
-    Object.assign(node, e.detail);
 
   })
 

@@ -1,5 +1,3 @@
-let editorExtensionId = chrome.runtime.id;
-
 var s = document.createElement('script');
 s.setAttribute('id', 'injected-script');
 s.src = chrome.runtime.getURL('contentScript.js');

@@ -163,7 +163,8 @@ export const getData = (tab, registerComps) => {
   const filterTree = (compRecord, tempStructure) => {
     // if no children, return
     // console.log('with node in path:', tempStructure.node.children)
-    console.log('w/o node in path:', tempStructure.children)
+    console.log('w/o node in path for temp structure:', tempStructure.children)
+    console.log('comprRecord', compRecord)
     // get rid of any children that arent present in compRecord
     // recurse with existing children
   };

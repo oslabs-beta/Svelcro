@@ -11,7 +11,7 @@
 <style>
   
   #profiler-Graphs{
-    width: 50%;
+    width: 100%;
     height: 100%;
 
     resize: horizontal;

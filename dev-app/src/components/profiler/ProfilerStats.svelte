@@ -24,9 +24,9 @@
 
 <div id="profiler-Stats">
   profiler-Stats
-  <!-- <div id="record">
+  <div id="record">
     ${compCountRecord}
-  </div> -->
+  </div>
 </div>
 
 <style>

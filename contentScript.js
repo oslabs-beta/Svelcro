@@ -80,8 +80,13 @@ let extensionURL = document.querySelector('#injected-script').src;
         return true;
     }
   });
+  // let start = window.performance.now();
   // add all Svelte components to array
+  let start;
   window.document.addEventListener('SvelteRegisterComponent', (e) => {
+    start = window.performance.now();
+    console.log('component rerendered:', start)
+    console.log('e:', e)
     
     let isFirstAfterUpdate = true;
     
@@ -107,7 +112,8 @@ let extensionURL = document.querySelector('#injected-script').src;
     console.log(tagName, ' event', e)
 
     
-
+    //CONSOLE LOG HERE BC A COMPONENT HAS BEEN RERENDERED
+    // console.log('component rerendered:', window.performance.now())
     // console.log('VERY FIRST`:', window.performance.now())
     component.$$.on_mount.push(() => {
       // MING TEST
@@ -127,11 +133,11 @@ let extensionURL = document.querySelector('#injected-script').src;
     });
     
     component.$$.before_update.push(() => {
-      // MING TEST
-      console.log(tagName, 'before update')
-      //////
+      let time = window.performance.now()
+      component.$$.before_update.time = time;
+      // start = window.performance.now()
       // const curId = component.$$.ctx[0].id;
-      // console.log( tagName, ' ' ,component.$$.ctx[0].id, 'beforeUpdate');
+      // console.log( tagName, ' ' , component.$$.ctx[0].id, 'beforeUpdate is', window.performance.now());
       // console.log(Date.now())
       // console.log('BEFORE IS:', window.performance.now())
       // if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
@@ -141,12 +147,14 @@ let extensionURL = document.querySelector('#injected-script').src;
     });
 
     component.$$.after_update.push(() => {
-      // MING TEST
-      console.log(tagName, 'after update')
-      // UNCOMMENT BELOW
-      if (isFirstAfterUpdate) { return isFirstAfterUpdate = false}
+      let now = window.performance.now();
       const curId = component.$$.id;
-      console.log( tagName, ' ' , curId , 'AfterUpdate');
+      // console.log('component is:', curId, 'and current time is:', now)
+      let rendertime = now - component.$$.before_update.time;
+      // let rendertime = now - component.$$.before_update.time;
+      if (isFirstAfterUpdate) { return isFirstAfterUpdate = false;}
+    
+      console.log( tagName, ' ' , curId , 'render time is is:', rendertime);
       // console.log(Date.now())
       // console.log('AFTER IS:', window.performance.now())
       //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;

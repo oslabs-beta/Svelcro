@@ -1,6 +1,52 @@
 <script>
   
     import { getData } from '../../utils/componentDisplayFuncs';
+
+    let compInstanceRecord = {};
+    let compRecord;
+
+    chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
+
+    if (msg.body === "UPDATE_INSTANCE") {
+      const { data, components } = msg;
+      console.log('components in UPDATE_INSTANCE: ', JSON.parse(components))
+     
+      // Updating Instance
+      for (const key in compInstanceRecord) {
+        delete compInstanceRecord[key];
+      }
+      const tempObj = { ...JSON.parse(data) };
+      console.log("data in UPDATE_INSTANCE: ", tempObj )
+      for (const property in tempObj) {
+        compInstanceRecord[property] = tempObj[property];
+      }
+
+      // Updating Component Record
+      compRecord = JSON.parse(components);
+    }
+    return true;
+  });
+
+  // chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
+  //   if (msg.body === "UPDATE_RENDER") {
+  //     const { data } = msg;
+  //     console.log("compInstanceRecord: ", compInstanceRecord);
+     
+  //     // Updating Instance
+  //     for (const key in compInstanceRecord) {
+  //       delete compInstanceRecord[key];
+  //     }
+  //     const tempObj = { ...JSON.parse(data) };
+  //     console.log("data in UPDATE_RENDER: ", tempObj )
+  //     for (const property in tempObj) {
+  //       compInstanceRecord[property] = tempObj[property];
+  //     }
+
+  //     // Updating Component Record
+  //     compRecord = components;
+  //   }
+  // });
+  
   
 </script>
  
@@ -8,8 +54,8 @@
     
   <div id="component-tree-display">
     <nav class="header" id="views-navbar">
-      <button on:click={() => getData('tree')}>TREE</button>
-      <button on:click={() => getData('chart')}>HIERARCHY</button>
+      <button on:click={() => getData('tree', compRecord)}>TREE</button>
+      <button on:click={() => getData('chart', compRecord)}>HIERARCHY</button>
     </nav>
     <br>
   </div>
@@ -20,7 +66,7 @@
     width: 50%;
     height: 100%;
 
-    resize: horizontal;
+    /* resize: horizontal; */
     overflow: auto;
   }
 

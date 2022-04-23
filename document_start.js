@@ -7,5 +7,7 @@ s.onload = function() {
     console.log(this);
     this.remove();
 };
-(document.head || document.documentElement).appendChild(s);
+document.documentElement.appendChild(s);
+
+// (document.head || document.documentElement).appendChild(s);
 

@@ -5,6 +5,7 @@
 // }
 // console.log('contentScript chrome/runtime.id: ',chrome.runtime.id);
 let extensionURL = document.querySelector('#injected-script').src;
+let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
 // console.log('Test: ', extensionURL);
 // console.log('Lastindex: ',extensionURL.lastIndexOf('/'));
 // console.log(extensionURL.slice( 19 ,extensionURL.lastIndexOf('/')))
@@ -64,14 +65,27 @@ let extensionURL = document.querySelector('#injected-script').src;
   let nextId = 1;
   // MING TEST
   // Proxy object that trigger function when property values are changed
-  var compCounts = new Proxy({}, {
+  let compCounts = new Proxy({}, {
     set: function (target, key, value) {
         console.log(`${key} set to ${value}`);
         target[key] = value;
 
         // Send render count records to dev Tools
-        let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
+        // let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
         chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_RENDER', data: JSON.stringify(target) });
+        return true;
+    }
+  });
+  let compTimes = new Proxy({}, {
+    set: function (target, key, value) {
+        console.log(`${key} set to ${value}`);
+        target[key] = value;
+
+        // TIME CHECK MING
+        console.log('webpage time record: ', target);
+
+        // Send render times records to dev Tools
+        chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_TIMES', data: JSON.stringify(target) });
         return true;
     }
   });
@@ -100,7 +114,11 @@ let extensionURL = document.querySelector('#injected-script').src;
     // console.log('event', e)
     if (first) {
       component.$$.on_mount.push(() => {
-        console.log('component is:', component.$$.id, 'first render is:', window.performance.now() - start);
+        let rendertime = window.performance.now() - start;
+        const curId = component.$$.id;
+        // console.log('component is:', component.$$.id, 'first render is:', window.performance.now() - start);
+        compTimes[curId] = parseFloat(rendertime).toFixed(3);
+        compCounts[curId] = 1;
       })
     }
 
@@ -135,6 +153,7 @@ let extensionURL = document.querySelector('#injected-script').src;
       //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
       // else compCounts[curId] = 1;
       compCounts[curId] += 1;
+      compTimes[curId] = parseFloat(rendertime).toFixed(3);
     });
 
 

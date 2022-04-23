@@ -7,7 +7,7 @@ import ProfilerStats from '../profiler/ProfilerStats.svelte'
 
 <div id="profiler-display">
   <ProfilerGraphs/>
-  <ProfilerStats/>
+  <!-- <ProfilerStats/> -->
 </div>
 
 <style>

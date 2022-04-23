@@ -25,6 +25,9 @@ let compTimeRecord = [];
 
       console.log("compCountRecord: ", compCountRecord);
       // console.log('testing:', Object.entries(compCountRecord));
+      let graphCount = document.getElementById("graph");
+      graphCount.remove();
+      getGraphs("count");
     } if (msg.body === "UPDATE_TIMES") {
       console.log('WE ARE RIGHT HERE')
       // console.log("recieving at Dev Tools! Coming from ", body);
@@ -46,27 +49,45 @@ let compTimeRecord = [];
 
       console.log("compTimeRecord: ", compTimeRecord);
       // console.log('testing:', Object.entries(compCountRecord));
+      let graphTime = document.getElementById("graph");
+      graphTime.remove();
+      getGraphs("time");
     }
     return true;
   });
   const getGraphs = (type) => {
+    //find max value of the data to determine x axis
+    
+    const findMaxTime = (input) => {
+      let values = input.map(el => el.time);
+      console.log('values is:', values)
+      return Math.max(...values)
+    }
+    const findMaxCount = (input) => {
+      let values = input.map(el => el.count);
+      console.log('values is:', values)
+      return Math.max(...values)
+    }
+
     switch(type) {
       case "time":
         // console.log('we are in time')
+        let maxTime = Math.ceil(findMaxTime(compTimeRecord));
+        console.log('maxTime is:', maxTime)
         var margin = {top: 20, right: 30, bottom: 40, left: 90},
             width = 460 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 
         //check if a D3 tree is already present
         // if so, replace tree, instead of appending tree
-        if (!d3.select("#component-cur").empty()) {
-          d3.select("#component-cur").remove()
+        if (!d3.select("#graph").empty()) {
+          d3.select("#graph").remove()
         };
 
         // append the svg object to the body of the page
         var svg = d3.select("#profiler-Graphs")
           .append("svg")
-            .attr('id', 'component-cur')
+            .attr('id', 'graph')
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -76,7 +97,10 @@ let compTimeRecord = [];
         const generateTimeGraph = (data) => {
           // Add X axis
           var x = d3.scaleLinear()
-            .domain([0, 10])
+
+
+          //change x axis limit to be maxvalue +5
+            .domain([0, maxTime + 2])
             .range([ 0, width]);
           svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -112,29 +136,40 @@ let compTimeRecord = [];
             // .rangeRoundBands([innerHeight , 0], barPadding, barPaddingOuter);
 
               // horizontal bar labels
-          svg.append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-            .selectAll(".textlabel")
-            .data(data)
-            .enter()
-            .append("text")
+     
+            var xAxisLabelOffset = 75;
+
+            // horizontal bar labels
+              svg.append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .selectAll(".textlabel")
+              .data(data)
+              .enter()
+              .append("text")
             .attr("class", "textlabel")
             .style("font-family", "Arial")
-            .attr("x", function(d){ return x(parseFloat(d["time"])) ;  })
-            .attr("y", function(d){ return y(d["component"]) + y.rangeBand()/2; })
-            .text(function(d){ return (d["time"]) ; }); 
+            .attr("x", function(d){ return xScale(parseFloat(d["Percentage"])) ;  })
+            .attr("y", function(d){ return yScale(d["LabelD3"]) + yScale.rangeBand()/2; })
+            .text(function(d){ return (d["Percentage"] + "%"); }); 
 
-            // svg.selectAll(".text")  		
-            // .data(data)
-            // .enter()
-            // .append("text")
-            // .attr("class","label")
-            // .attr("x", (function(d) { return x(d.component); }  ))
-            // .attr("y", function(d) { return y(d.time) - 20})
-            // .attr("dy", ".75em")
-            // .attr('text-anchor', "middle")
-            // .text(function(d) { return d.time; }); 
+            // X-axis labels
+            svg.append("text")
+            .attr("text-anchor", "middle")
+            .style("font-size", "13px")
+            .style("color", "#333333")
+            .attr("transform", "translate("+ (outerWidth/2) + "," +(outerHeight-(padding/4)) + ")")
+            .text("% of Households")
+            .style("font-family", "Arial"); 
 
+            //title for the chart 
+
+            svg.append("text")
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("color", "#333333")
+            .attr("transform", "translate("+ (outerWidth/3.78) + "," +(outerHeight/30) + ")")
+            .text("Housing Tenure of DC Residents")
+            .style("font-family", "Arial");
             
         }
 
@@ -143,6 +178,8 @@ let compTimeRecord = [];
 
         //count graph
       case "count":
+       let maxCount = findMaxCount(compCountRecord);
+       console.log("maxCount")
         // set the dimensions and margins of the graph
         var margin = {top: 20, right: 30, bottom: 40, left: 90},
             width = 460 - margin.left - margin.right,
@@ -150,14 +187,14 @@ let compTimeRecord = [];
 
         //check if a D3 tree is already present
         // if so, replace tree, instead of appending tree
-        if (!d3.select("#component-cur").empty()) {
-          d3.select("#component-cur").remove()
+        if (!d3.select("#graph").empty()) {
+          d3.select("#graph").remove()
         };
 
         // append the svg object to the body of the page
         var svg = d3.select("#profiler-Graphs")
           .append("svg")
-            .attr('id', 'component-cur')
+            .attr('id', 'graph')
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -167,7 +204,7 @@ let compTimeRecord = [];
         const generateCountGraph = (data) => {
           // Add X axis
           var x = d3.scaleLinear()
-            .domain([0, 20])
+            .domain([0, maxCount + 2])
             .range([ 0, width]);
           svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -247,6 +284,42 @@ let compTimeRecord = [];
     display: flex;
     width: 100%;
   }
+
+  .axis text{
+  font-family: Arial;
+  font-size: 13px;
+  color: #333333;
+  text-anchor: end;
+   }
+
+  .axis path {
+  fill:none;
+  stroke:#333333 ;
+  stroke-width: 1.5px;
+  shape-rendering: crispEdges;
+  font-family: Arial;
+  }
+
+
+    .bar{
+    stroke: none;
+    fill: #037FAA;
+
+   }
+     .axis .label{
+    font-family:  Arial;
+    font-size:13px;
+    color: #333333;
+    text-anchor: middle;
+
+    }
+     .textlabel{
+    font-family:  Arial;
+    font-size:13px;
+    color: #333333;
+    text-anchor: left;
+   }
+
 
 </style>
 

@@ -547,7 +547,7 @@ export const getData = tab => {
             MyTree.prototype.$onInit = function () {
                 let _this = this;
                 this.margin = { top: 20, right: 10, bottom: 20, left: 10 };
-                this.width = 130 - this.margin.right - this.margin.left;
+                this.width = 150 - this.margin.right - this.margin.left;
                 this.height = 100 - this.margin.top - this.margin.bottom;
                 this.barHeight = 20;
                 this.barWidth = this.width * .8;

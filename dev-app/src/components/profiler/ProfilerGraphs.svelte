@@ -4,6 +4,8 @@ import * as d3 from "d3";
 
 let compCountRecord = [];
 let compTimeRecord = [];
+let timePanel = false;
+let countPanel = false;
 
   chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
     if (msg.body === "UPDATE_RENDER") {
@@ -25,9 +27,11 @@ let compTimeRecord = [];
 
       console.log("compCountRecord: ", compCountRecord);
       // console.log('testing:', Object.entries(compCountRecord));
-      let graphCount = document.getElementById("graph");
-      graphCount.remove();
-      getGraphs("count");
+      if (countPanel) {
+        let graphCount = document.getElementById("graph");
+        graphCount.remove();
+        getGraphs("count");
+      }
     } if (msg.body === "UPDATE_TIMES") {
       console.log('WE ARE RIGHT HERE')
       // console.log("recieving at Dev Tools! Coming from ", body);
@@ -49,9 +53,11 @@ let compTimeRecord = [];
 
       console.log("compTimeRecord: ", compTimeRecord);
       // console.log('testing:', Object.entries(compCountRecord));
-      let graphTime = document.getElementById("graph");
-      graphTime.remove();
-      getGraphs("time");
+      if (timePanel) {
+        let graphTime = document.getElementById("graph");
+        graphTime.remove();
+        getGraphs("time");
+      }
     }
     return true;
   });
@@ -246,8 +252,14 @@ let compTimeRecord = [];
 
 <div id="profiler-Graphs">
   <nav class="header" id="profile-navbar">
-    <button on:click={() => getGraphs("time")}>Render Time</button>
-    <button on:click={() => getGraphs("count")}>Render Count</button>
+    <button on:click={() => {
+      timePanel = true;
+      countPanel = false;
+      getGraphs("time")}}>Render Time</button>
+    <button on:click={() => {
+      countPanel = true;
+      timePanel = false;
+      getGraphs("count")}}>Render Count</button>
   </nav>
   <br>
 </div>

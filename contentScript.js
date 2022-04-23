@@ -100,6 +100,7 @@ let extensionURL = document.querySelector('#injected-script').src;
     
     const { component, tagName } = e.detail;
 
+    component.$$['tag_name'] = tagName;
     component.$$['id'] = tagName + nextId;
     nextId++;
     const curId = component.$$.id;

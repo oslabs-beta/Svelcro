@@ -2,7 +2,8 @@ import { parse, walk } from 'svelte/compiler';
 import exploreCompositeDataType from "./exploreCompositeDataType.js";
 import * as d3 from "d3";
 
-export const getData = tab => {
+export const getData = (tab , compRecord) => {
+  console.log('componentDisplayFunc - compRecord in getData: ', compRecord)
   let i = 0;
   let componentNames = [];
   const D3PreTree = [];
@@ -146,6 +147,42 @@ export const getData = tab => {
     if (arr.length !== 0) {
       createTree(arr);
     }
+  }
+
+  const filterTree = (compRecord, templateStructured) => {
+    console.log('filterTree - compRecord: ', compRecord);
+    console.log('filterTree - templateStructured: ', templateStructured);
+    // original templateStructured saved
+    const newTemp = templateStructured;
+    // comp record tag names
+    const compRecordTagNames = {}
+    
+    compRecord.forEach((comp) => {
+      const curTag = comp.$$.tag_name;
+      if (compRecordTagNames.hasOwnProperty(curTag)) compRecordTagNames[curTag] += 1;
+      else compRecordTagNames[curTag] = 1;
+    })
+    console.log('filterTree - compRecordTagNames: ', compRecordTagNames);
+    // helper 
+    const helper = (struc) => {
+      // if no children, return 
+      if (struc.children.length === 0) return;
+      // start at beginning of template structured
+      // check that children have a match in compRecord
+      const curChildren = struc.children;
+      struc.children = curChildren.filter((child) => {
+        return compRecordTagNames.hasOwnProperty(child.id);
+      });
+      struc.children.forEach((child) => {
+        helper(child);
+      })
+      // console.log("filterTreeHelper - children after filter: ", struc.children);
+    }
+    // call helper
+    helper(templateStructured);
+    console.log('filterTree - templateStructured after', templateStructured)
+    // return template structured
+    return templateStructured;
   }
 
   // Get resources of inspected program and generate views
@@ -330,10 +367,13 @@ export const getData = tab => {
           var treemap = d3.tree()
               .size([width, height]);
               
+          // FILTER TREE so it only displays Svelte components
+
 
           //  assigns the data to a hierarchy using parent-child relationships
-          var nodes = d3.hierarchy(templateStructured);
-     
+          var nodes = d3.hierarchy(filterTree(compRecord, templateStructured));
+
+         
 
           // maps the node data to the tree layout
           nodes = treemap(nodes);

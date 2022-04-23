@@ -3,9 +3,10 @@
     import { getData } from '../../utils/componentDisplayFuncs';
 
     let compInstanceRecord = {};
+    let compRecord;
 
     chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-      
+
     if (msg.body === "UPDATE_INSTANCE") {
       const { data, components } = msg;
       console.log('components in UPDATE_INSTANCE: ', JSON.parse(components))
@@ -21,7 +22,7 @@
       }
 
       // Updating Component Record
-      compRecord = components;
+      compRecord = JSON.parse(components);
     }
     return true;
   });
@@ -53,7 +54,7 @@
     
   <div id="component-tree-display">
     <nav class="header" id="views-navbar">
-      <button on:click={() => getData('tree', compInstanceRecord)}>TREE</button>
+      <button on:click={() => getData('tree', compRecord)}>TREE</button>
       <button on:click={() => getData('chart')}>HIERARCHY</button>
     </nav>
     <br>

@@ -5,6 +5,7 @@
 // }
 // console.log('contentScript chrome/runtime.id: ',chrome.runtime.id);
 let extensionURL = document.querySelector('#injected-script').src;
+let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
 // console.log('Test: ', extensionURL);
 // console.log('Lastindex: ',extensionURL.lastIndexOf('/'));
 // console.log(extensionURL.slice( 19 ,extensionURL.lastIndexOf('/')))
@@ -64,7 +65,7 @@ let extensionURL = document.querySelector('#injected-script').src;
   let nextId = 1;
   // MING TEST
   // Proxy object that trigger function when property values are changed
-  var compCounts = new Proxy({}, {
+  let compCounts = new Proxy({}, {
     set: function (target, key, value) {
         console.log(`${key} set to ${value}`);
         target[key] = value;
@@ -88,9 +89,23 @@ let extensionURL = document.querySelector('#injected-script').src;
         return true;
     }
   });
+  let compTimes = new Proxy({}, {
+    set: function (target, key, value) {
+        console.log(`${key} set to ${value}`);
+        target[key] = value;
+
+        // TIME CHECK MING
+        console.log('webpage time record: ', target);
+
+        // Send render times records to dev Tools
+        chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_TIMES', data: JSON.stringify(target) });
+        return true;
+    }
+  });
   // let start = window.performance.now();
   // add all Svelte components to array
   let start;
+  let first = true;
   window.document.addEventListener('SvelteRegisterComponent', (e) => {
     start = window.performance.now();
     // console.log('component rerendered:', start)
@@ -118,13 +133,19 @@ let extensionURL = document.querySelector('#injected-script').src;
     // console.log('components', components)
     // console.log('current components:', component)
     // console.log('event', e)
+    if (first) {
+      component.$$.on_mount.push(() => {
+        let rendertime = window.performance.now() - start;
+        const curId = component.$$.id;
+        // console.log('component is:', component.$$.id, 'first render is:', window.performance.now() - start);
+        compTimes[curId] = parseFloat(rendertime).toFixed(3);
+        compCounts[curId] = 1;
+      })
+    }
 
-    
-    //CONSOLE LOG HERE BC A COMPONENT HAS BEEN RERENDERED
-    // console.log('component rerendered:', window.performance.now())
-    // console.log('VERY FIRST`:', window.performance.now())
-    //how to reset window.perforamnce.now??? starting from zero 
-    
+
+
+    console.log('current components:', component)
     component.$$.before_update.push(() => {
       let time = window.performance.now()
       component.$$.before_update.time = time;
@@ -153,8 +174,7 @@ let extensionURL = document.querySelector('#injected-script').src;
       //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
       // else compCounts[curId] = 1;
       compCounts[curId] += 1;
-      
-      
+      compTimes[curId] = parseFloat(rendertime).toFixed(3);
     });
 
     // INSTANCE

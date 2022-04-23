@@ -61,6 +61,7 @@ export const getData = (tab , compRecord) => {
             ASTnode.declarations[0].init.type === "ObjectExpression" ||
             ASTnode.declarations[0].init.type === "ArrayExpression"
           ) {
+            console.log("AST NODE IS:", ASTnode)
             state[ASTnode.declarations[0].id.name] = exploreCompositeDataType(ASTnode.declarations[0].init);
           }
 

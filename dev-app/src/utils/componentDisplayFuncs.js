@@ -355,23 +355,22 @@ export const getData = (tab , compRecord) => {
           return d.parent;
         })(componentTemplate);
         console.log("template structure: ", templateStructured); 
-
-
+      
+      // filter through templateStructured 
+      templateStructured = filterTree(compRecord, templateStructured);
       switch (tab) {
         case "tree":
-          var margin = {top: 40, right: 90, bottom: 50, left: 90},
-          width = 660 - margin.left - margin.right,
+          var margin = {top: 40, right: 10, bottom: 50, left: 10},
+          width = 150 - margin.left - margin.right,//660
           height = 500 - margin.top - margin.bottom;
 
           // declares a tree layout and assigns the size
           var treemap = d3.tree()
               .size([width, height]);
-              
-          // FILTER TREE so it only displays Svelte components
 
 
           //  assigns the data to a hierarchy using parent-child relationships
-          var nodes = d3.hierarchy(filterTree(compRecord, templateStructured));
+          var nodes = d3.hierarchy(templateStructured);
 
          
 
@@ -586,7 +585,7 @@ export const getData = (tab , compRecord) => {
             MyTree.prototype.$onInit = function () {
                 let _this = this;
                 this.margin = { top: 20, right: 10, bottom: 20, left: 10 };
-                this.width = 130 - this.margin.right - this.margin.left;
+                this.width = 150 - this.margin.right - this.margin.left;
                 this.height = 100 - this.margin.top - this.margin.bottom;
                 this.barHeight = 20;
                 this.barWidth = this.width * .8;

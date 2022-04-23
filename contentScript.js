@@ -76,7 +76,7 @@ let extensionURL = document.querySelector('#injected-script').src;
         return true;
     }
   });
-
+  // Object to track instances of components
   const compInstance = new Proxy({}, {
     set: function (target, key, value) {
         target[key] = value;
@@ -180,11 +180,13 @@ let extensionURL = document.querySelector('#injected-script').src;
       // MING TEST
       console.log(tagName, 'on destroy')
       
+      // look for component and remove it from the components array
+      
+      
       compInstance[tagName] -= 1;
       // For render count
       delete compCounts[curId];
 
-      
     });
     
     component.$$.before_update.push(() => {

@@ -1,50 +1,21 @@
+let editorExtensionId = '${editorExtensionId}';
 
-// console.log('contentScript chrome/runtime.id: ',chrome.runtime.id);
-let extensionURL = document.querySelector('#injected-script').src;
-let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
-// console.log('Test: ', extensionURL);
-// console.log('Lastindex: ',extensionURL.lastIndexOf('/'));
-// console.log(extensionURL.slice( 19 ,extensionURL.lastIndexOf('/')))
 (function () { 
   'use strict';
 
   const components = [];
-
-  // MING TEST
-  window.document.addEventListener("click", function(){
-    // console.log("chrome.runtime.id: ", chrome.runtime.id);
-    // let editorExtensionId = 'bdbhodpgbllbabnnafknafigdemaahdd';
-
-    // chrome.runtime.sendMessage(editorExtensionId, { body: "contentScript" });
-
-    // window.postMessage({
-    //   body: "contentScript"
-    // })
-    // var channel = new MessageChannel();
-
-    // console.log('channel object port 1: ', channel.port1);
-
-    // channel.port1.postMessage({body:"contentScript"});
-    
-  }, true)
-
-  // window.document.addEventListener("SvelteDOMSetData", (e) => {
-  //   console.log(e)
-  // })
+  let compInstanceRan = false;
 
   // object to hold render counts by component
-  // const compCounts = {};
   let nextId = 1;
   // MING TEST
   // Proxy object that trigger function when property values are changed
   let compCounts = new Proxy({}, {
     set: function (target, key, value) {
-        console.log(`${key} set to ${value}`);
         target[key] = value;
 
         // console.log(target)
         // Send render count records to dev Tools
-        let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
         chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_RENDER', data: JSON.stringify(target)});
         return true;
     }
@@ -53,17 +24,20 @@ let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
   const compInstance = new Proxy({}, {
     set: function (target, key, value) {
         target[key] = value;
-
-        // Send render count records to dev Tools
-        let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
-        // console.log('extension id', editorExtensionId)
-        chrome.runtime.sendMessage(editorExtensionId, { body: "UPDATE_INSTANCE", data: JSON.stringify(target), components: JSON.stringify(components) });
+        if (!compInstance) {
+          setTimeout(() => {
+            chrome.runtime.sendMessage(editorExtensionId, { body: "UPDATE_INSTANCE", data: JSON.stringify(target), components: JSON.stringify(components)});
+            compInstanceRan = true;
+          }, 7000);
+        } else {
+          // Send render count records to dev Tools
+          chrome.runtime.sendMessage(editorExtensionId, { body: "UPDATE_INSTANCE", data: JSON.stringify(target), components: JSON.stringify(components) });
+        }
         return true;
     }
   });
   let compTimes = new Proxy({}, {
     set: function (target, key, value) {
-        console.log(`${key} set to ${value}`);
         target[key] = value;
 
         // TIME CHECK MING
@@ -74,11 +48,13 @@ let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
         return true;
     }
   });
-  // let start = window.performance.now();
+
   // add all Svelte components to array
   let start;
   let first = true;
+
   window.document.addEventListener('SvelteRegisterComponent', (e) => {
+    
     start = window.performance.now();
     // console.log('component rerendered:', start)
     // console.log('e:', e)
@@ -115,8 +91,6 @@ let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
       })
     }
 
-
-
     console.log('current components:', component)
     component.$$.before_update.push(() => {
       let time = window.performance.now()
@@ -149,19 +123,9 @@ let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
       compTimes[curId] = parseFloat(rendertime).toFixed(3);
     });
 
-    // INSTANCE
-   
-    
 
-    // console.log('is the id there?', component.$$)
-    // console.log('components', components)
-    // console.log('current components:', component)
-    // console.log(tagName, ' event', e)
-
-    
     //CONSOLE LOG HERE BC A COMPONENT HAS BEEN RERENDERED
     // console.log('component rerendered:', window.performance.now())
-    // console.log('VERY FIRST`:', window.performance.now())
     component.$$.on_mount.push(() => {
       // MING TEST
       console.log(tagName, ' on mount');
@@ -213,27 +177,14 @@ let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
       
     });
 
-
   })
 
-
-
-  function setupListeners(root) {
-    // root.addEventListener('SvelteRegisterBlock', (e) => saveAndDispatchState());
-    // root.addEventListener('SvelteDOMSetData', (e) => saveAndDispatchState());
-    // root.addEventListener('SvelteDOMInsert', (e) => saveAndDispatchState());
-
-    // These event listeners aren't being used in this version, but could provide valuable data for future versions of this product
-    // root.addEventListener('SvelteDOMRemove', (e) => (e) => sendMessages(parseEvent(e.detail)));
-    // root.addEventListener('SvelteDOMAddEventListener', (e) => sendMessages(parseEvent(e.detail)));
-    // root.addEventListener('SvelteDOMRemoveEventListener',(e) => sendMessages(parseEvent(e.detail)));
-    // root.addEventListener('SvelteDOMSetProperty', (e) => sendMessages(parseEvent(e.detail)));
-    // root.addEventListener('SvelteDOMSetAttribute', (e) => sendMessages(parseEvent(e.detail)));
-    // root.addEventListener('SvelteDOMRemoveAttribute', (e) => sendMessages(parseEvent(e.detail)));
-  };
-
   // console.log('INJECTED SCRIPTS');
+
+    window.addEventListener("message", function(event) {
+        const { data } = event.origin;
+        // We only accept messages from ourselves
+        console.log(data)
+    }, false);
  
 })();
-  
-

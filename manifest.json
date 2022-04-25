@@ -8,7 +8,8 @@
         "service_worker": "background.js"
     },
     "content_security_policy": {
-        "extension pages": "script-src 'self' https://d3js.org/d3.v7.min.js; object-src 'self'"},
+        "extension pages": "script-src 'self' https://d3js.org/d3.v7.min.js; object-src 'self'"
+    },
     "permissions": [ 
         "contextMenus",
         "tabs",
@@ -21,6 +22,10 @@
     }],
     "web_accessible_resources": [{
         "resources": ["contentScript.js"],
+        "matches": ["<all_urls>"]
+    },
+    {
+        "resources": ["document_start.js"],
         "matches": ["<all_urls>"]
     }],
     "externally_connectable": {

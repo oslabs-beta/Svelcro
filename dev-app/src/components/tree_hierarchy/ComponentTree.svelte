@@ -1,22 +1,20 @@
 <script>
-  
-    import { getData } from '../../utils/componentDisplayFuncs';
+  import * as getData from "../../utils/componentDisplayFuncs";
 
-    let compInstanceRecord = {};
-    let compRecord;
+  let compInstanceRecord = {};
+  let compRecord;
 
-    chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-
+  chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
     if (msg.body === "UPDATE_INSTANCE") {
       const { data, components } = msg;
-      console.log('components in UPDATE_INSTANCE: ', JSON.parse(components))
-     
+      console.log("components in UPDATE_INSTANCE: ", JSON.parse(components));
+
       // Updating Instance
       for (const key in compInstanceRecord) {
         delete compInstanceRecord[key];
       }
       const tempObj = { ...JSON.parse(data) };
-      console.log("data in UPDATE_INSTANCE: ", tempObj )
+      console.log("data in UPDATE_INSTANCE: ", tempObj);
       for (const property in tempObj) {
         compInstanceRecord[property] = tempObj[property];
       }
@@ -31,7 +29,7 @@
   //   if (msg.body === "UPDATE_RENDER") {
   //     const { data } = msg;
   //     console.log("compInstanceRecord: ", compInstanceRecord);
-     
+
   //     // Updating Instance
   //     for (const key in compInstanceRecord) {
   //       delete compInstanceRecord[key];
@@ -46,23 +44,18 @@
   //     compRecord = components;
   //   }
   // });
-  
-  
 </script>
- 
-    
-    
-  <div id="component-tree-display">
-    <nav class="header" id="views-navbar">
-      <button on:click={() => getData('tree', compRecord)}>TREE</button>
-      <button on:click={() => getData('chart', compRecord)}>HIERARCHY</button>
-    </nav>
-    <br>
-  </div>
 
+<div id="component-tree-display">
+  <nav class="header" id="views-navbar">
+    <button on:click={() => getData("tree", compRecord)}>TREE</button>
+    <button on:click={() => getData("chart", compRecord)}>HIERARCHY</button>
+  </nav>
+  <br />
+</div>
 
 <style>
-  #component-tree-display{
+  #component-tree-display {
     width: 50%;
     height: 100%;
 
@@ -80,19 +73,17 @@
   }
 
   button {
-  background-color: rgb(45, 42, 45);
-  cursor: pointer;
-  border: none;
-  width: 100%;
+    background-color: rgb(45, 42, 45);
+    cursor: pointer;
+    border: none;
+    width: 100%;
 
-  /* TEXT COLOR */
-  color: rgba(245, 245, 245, 0.543);
+    /* TEXT COLOR */
+    color: rgba(245, 245, 245, 0.543);
   }
 
   .header {
     display: flex;
     width: 100%;
   }
-
 </style>
-  

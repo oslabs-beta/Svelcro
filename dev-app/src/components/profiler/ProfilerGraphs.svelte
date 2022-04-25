@@ -27,6 +27,7 @@ let countPanel = false;
 
       console.log("compCountRecord: ", compCountRecord);
       // console.log('testing:', Object.entries(compCountRecord));
+  
       if (countPanel) {
         let graphCount = document.getElementById("graph");
         graphCount.remove();
@@ -53,6 +54,7 @@ let countPanel = false;
 
       console.log("compTimeRecord: ", compTimeRecord);
       // console.log('testing:', Object.entries(compCountRecord));
+      
       if (timePanel) {
         let graphTime = document.getElementById("graph");
         graphTime.remove();
@@ -133,7 +135,17 @@ let countPanel = false;
             .attr("width", function(d) { return x(d.time); })
             .attr("height", y.bandwidth() )
             .attr("fill", "#ff3e00")
+            .append("text")
+            .style("text-anchor", "start")
+            .style("font-size", "14px")
+            .text("testing")
+            .style("fill", "rgb(163, 163, 163)")
+            .attr("x", "x(0")
+            .attr("y", function(d) { return x(d.time) + 1; });
+            
+            
 
+          
             // var xScale = d3.scale.linear()
             // .range([0, innerWidth - margin.right - margin.left], .1);
 
@@ -143,40 +155,56 @@ let countPanel = false;
 
               // horizontal bar labels
      
-            var xAxisLabelOffset = 75;
+            // var xAxisLabelOffset = 75;
 
             // horizontal bar labels
-              svg.append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                .selectAll(".textlabel")
-              .data(data)
-              .enter()
-              .append("text")
-            .attr("class", "textlabel")
-            .style("font-family", "Arial")
-            .attr("x", function(d){ return xScale(parseFloat(d["Percentage"])) ;  })
-            .attr("y", function(d){ return yScale(d["LabelD3"]) + yScale.rangeBand()/2; })
-            .text(function(d){ return (d["Percentage"] + "%"); }); 
+            //   svg.append("g")
+            //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            //     .selectAll(".textlabel")
+            //   .data(data)
+            //   .enter()
+            //   .append("text")
+            // .attr("class", "textlabel")
+            // .style("font-family", "Arial")
+            // .attr("x", function(d){ return xScale(parseFloat(d["Percentage"])) ;  })
+            // .attr("y", function(d){ return yScale(d["LabelD3"]) + yScale.rangeBand()/2; })
+            // .text(function(d){ return (d["Percentage"] + "%"); }); 
 
             // X-axis labels
-            svg.append("text")
-            .attr("text-anchor", "middle")
-            .style("font-size", "13px")
-            .style("color", "#333333")
-            .attr("transform", "translate("+ (outerWidth/2) + "," +(outerHeight-(padding/4)) + ")")
-            .text("% of Households")
-            .style("font-family", "Arial"); 
+            // svg.append("text")
+            // .attr("text-anchor", "middle")
+            // .style("font-size", "13px")
+            // .style("color", "#333333")
+            // .attr("transform", "translate("+ (outerWidth/2) + "," +(outerHeight-(padding/4)) + ")")
+            // .text("% of Households")
+            // .style("font-family", "Arial"); 
 
             //title for the chart 
 
+            // svg.append("text")
+            // .attr("text-anchor", "middle")
+            // .style("font-size", "16px")
+            // .style("color", "#333333")
+            // .attr("transform", "translate("+ (outerWidth/3.78) + "," +(outerHeight/30) + ")")
+            // .text("Housing Tenure of DC Residents")
+            // .style("font-family", "Arial");
+
             svg.append("text")
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("color", "#333333")
-            .attr("transform", "translate("+ (outerWidth/3.78) + "," +(outerHeight/30) + ")")
-            .text("Housing Tenure of DC Residents")
-            .style("font-family", "Arial");
+            .attr("class", "x_label")
+            .attr("text-anchor", "end")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text("Time (ms)");
+         
             
+            svg.append("text")
+            .attr("class", "graph_title")
+            .attr("x", width/2)
+            .attr("y",  height-340)
+            .attr("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Render Times per Component")
+            .style("fill", "rgb(163, 163, 163)");
         }
 
         generateTimeGraph(compTimeRecord);
@@ -238,8 +266,26 @@ let countPanel = false;
             .attr("height", y.bandwidth() )
             .attr("fill", "#ff3e00")
 
+          svg.append("text")
+          .attr("class", "x_label")
+          .attr("text-anchor", "end")
+          .attr("x", width)
+          .attr("y", height - 6)
+          .text("Count");
+
+          svg.append("text")
+            .attr("class", "graph_title")
+            .attr("x", width/2)
+            .attr("y",  height-340)
+            .attr("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Render Count per Component")
+            .style("fill", "rgb(163, 163, 163)");
+          
+
            
         }
+        console.log('data is:', compCountRecord)
         generateCountGraph(compCountRecord);
         break;
     }
@@ -253,12 +299,12 @@ let countPanel = false;
 <div id="profiler-Graphs">
   <nav class="header" id="profile-navbar">
     <button on:click={() => {
-      timePanel = true;
       countPanel = false;
+      timePanel = true;
       getGraphs("time")}}>Render Time</button>
     <button on:click={() => {
-      countPanel = true;
       timePanel = false;
+      countPanel = true;
       getGraphs("count")}}>Render Count</button>
   </nav>
   <br>
@@ -295,6 +341,9 @@ let countPanel = false;
   .header {
     display: flex;
     width: 100%;
+  }
+  .x_label {
+    fill: rgb(163, 163, 163);
   }
 
   .axis text{

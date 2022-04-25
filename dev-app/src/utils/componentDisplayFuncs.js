@@ -392,6 +392,9 @@ export const getData = (tab , compRecord) => {
                 .attr("transform",
                       "translate(" + margin.left + "," + margin.top + ")");
             console.log('svg is', svg)
+            // d3.select('svg').transition()
+            //             .duration(600)
+            //             .attr("height", height + 100);
 
           // adds the links between the nodes
           var link = g.selectAll(".link")

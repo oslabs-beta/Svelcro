@@ -180,11 +180,13 @@ let editorExtensionId = '${editorExtensionId}';
   })
 
   // console.log('INJECTED SCRIPTS');
-
-    window.addEventListener("message", function(event) {
-        const { data } = event.origin;
+  window.addEventListener("message", function(event) {
+        const { header } = event.data;
         // We only accept messages from ourselves
-        console.log(data)
+        console.log('injected page - heard message: ', data );
+
+        chrome.runtime.sendMessage(editorExtensionId, 
+        { body: "INITIAL-LOAD", compCounts: JSON.stringify(compCounts), compInstance: JSON.stringify(compInstance), compTimes: JSON.stringify(compTimes) });
     }, false);
  
 })();

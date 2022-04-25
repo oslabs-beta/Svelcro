@@ -1,5 +1,5 @@
 <script>
-  import * as getData from "../../utils/componentDisplayFuncs";
+  import { getData } from "../../utils/componentDisplayFuncs";
 
   let compInstanceRecord = {};
   let compRecord;

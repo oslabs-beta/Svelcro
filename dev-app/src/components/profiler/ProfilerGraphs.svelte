@@ -10,7 +10,10 @@
   chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
     if (msg.body === "UPDATE_RENDER") {
       const { data } = msg;
-      console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
+      console.log(
+        "ProfilerGraph - recieving at Dev Tools! Coming from ",
+        JSON.parse(data)
+      );
 
       const tempObj = { ...JSON.parse(data) };
       // for (const property in tempObj) {

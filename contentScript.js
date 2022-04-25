@@ -12,25 +12,9 @@ let editorExtensionId = extensionURL.slice( 19 ,extensionURL.lastIndexOf('/'));
 
   // MING TEST
   window.document.addEventListener("click", function(){
-    // console.log("chrome.runtime.id: ", chrome.runtime.id);
-    // let editorExtensionId = 'bdbhodpgbllbabnnafknafigdemaahdd';
-
-    // chrome.runtime.sendMessage(editorExtensionId, { body: "contentScript" });
-
-    // window.postMessage({
-    //   body: "contentScript"
-    // })
-    // var channel = new MessageChannel();
-
-    // console.log('channel object port 1: ', channel.port1);
-
-    // channel.port1.postMessage({body:"contentScript"});
     
   }, true)
 
-  // window.document.addEventListener("SvelteDOMSetData", (e) => {
-  //   console.log(e)
-  // })
 
   // object to hold render counts by component
   // const compCounts = {};

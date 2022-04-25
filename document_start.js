@@ -366,9 +366,11 @@ let editorExtensionId = '${editorExtensionId}';
 
   // console.log('INJECTED SCRIPTS');
   window.addEventListener("message", function(event) {
-        const { data } = event.origin;
+        const { header } = event.data;
         // We only accept messages from ourselves
-        console.log('data: ',data);
+        console.log('injected page - heard message: ', header );
+
+        chrome.runtime.sendMessage(editorExtensionId, { body: "INITIAL-LOAD", compCounts: JSON.stringify(compCounts), compInstance: JSON.stringify(compInstance), compTimes: JSON.stringify(compTimes) });
     }, false);
  
 })();
@@ -399,15 +401,8 @@ document.documentElement.dispatchEvent(new CustomEvent('reset'));
 
 chrome.runtime.onMessage.addListener((msg, sender, response)=> {
     
-    console.log('document_start.js heard some msg: ', msg);
+    console.log('document_start.js - heard msg: ', msg);
     window.postMessage({header : "APP MOUNTED"});
     return true;
 })
 
-// window.addEventListener("click", function(event) {
-
-//     // We only accept messages from ourselves
-//     // console.log('THIS WORKS, RECEIVING IN DOCUMENT_START', event)
-//     window.postMessage({header : "self send"});
-
-// }, false);

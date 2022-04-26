@@ -808,7 +808,7 @@ export const getData = (tab , compRecord) => {
     // helper 
     const helper = (struc) => {
       // if no children, return 
-      if (struc.children.length === 0) return;
+      if (!struc.children) return;
       // start at beginning of template structured
       // check that children have a match in compRecord
       const curChildren = struc.children;
@@ -899,11 +899,19 @@ export const getData = (tab , compRecord) => {
             let obj = {};
             obj.type = AST[i][j].type;
             obj.source = AST[i][j].source.value.split("");
+            console.log('compDisFunc - obj.source after split: ', obj.source)
             obj.source.shift();
             obj.source.shift();
+            console.log('compDisFunc - obj.source after shifts: ', obj.source)
             obj.source = obj.source.join("");
+            console.log('compDisFunc - obj.source after join: ', obj.source)
             obj.source = obj.source.replace(".svelte", "");
+            console.log('compDisFunc - obj.source after replace: ', obj.source)
+            obj.source = obj.source.slice(obj.source.lastIndexOf('/') + 1)
+            console.log('compDisFunc - obj.source after slice: ', obj.source)
             AST[i][j] = obj;
+            console.log('compDisFunc - AST after loop', AST)
+
           } else {
             let obj = {};
             obj.type = AST[i][j].type;
@@ -943,7 +951,10 @@ export const getData = (tab , compRecord) => {
           }
         }
       }
+      console.log('compDisplayFuncs - big data b4 compChildren call: ', bigData)
       componentChildren(bigData);
+
+      console.log('compDispFuncs - componentTemplate', componentTemplate)
 
       // added special obj for the top parent component for D3 stratifyy function to successfully create relevant array
       for (let i = 0; i < componentTemplate.length; i++) {

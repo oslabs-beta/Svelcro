@@ -199,37 +199,45 @@ let editorExtensionId = '${editorExtensionId}';
     set: function (target, key, value) {
         target[key] = value;
 
-        // console.log(target)
-        // Send render count records to dev Tools
-        chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_RENDER', data: JSON.stringify(target)});
+        chrome.runtime.sendMessage(editorExtensionId, 
+          { header: "UPDATE_RENDER", 
+            compCounts: JSON.stringify(compCounts), 
+            compInstance: JSON.stringify(compInstance), 
+            compTimes: JSON.stringify(compTimes), 
+            compArray: JSON.stringify(components) 
+          });
         return true;
-    }
+        }
   });
   // Object to track instances of components
   const compInstance = new Proxy({}, {
     set: function (target, key, value) {
-        target[key] = value;
-        if (!compInstance) {
-          setTimeout(() => {
-            chrome.runtime.sendMessage(editorExtensionId, { body: "UPDATE_INSTANCE", data: JSON.stringify(target), components: JSON.stringify(components)});
-            compInstanceRan = true;
-          }, 7000);
-        } else {
-          // Send render count records to dev Tools
-          chrome.runtime.sendMessage(editorExtensionId, { body: "UPDATE_INSTANCE", data: JSON.stringify(target), components: JSON.stringify(components) });
-        }
-        return true;
+      target[key] = value;
+      
+      // Send render count records to dev Tools
+      // chrome.runtime.sendMessage(editorExtensionId, { body: "UPDATE_INSTANCE", data: JSON.stringify(target), components: JSON.stringify(components) });
+      chrome.runtime.sendMessage(editorExtensionId, 
+        { header: "UPDATE_INSTANCE", 
+          compCounts: JSON.stringify(compCounts), 
+          compInstance: JSON.stringify(compInstance), 
+          compTimes: JSON.stringify(compTimes), 
+          compArray: JSON.stringify(components) 
+        });
+      
+      return true;
     }
   });
   let compTimes = new Proxy({}, {
     set: function (target, key, value) {
         target[key] = value;
 
-        // TIME CHECK MING
-        console.log('webpage time record: ', target);
-
-        // Send render times records to dev Tools
-        chrome.runtime.sendMessage(editorExtensionId, { body: 'UPDATE_TIMES', data: JSON.stringify(target) });
+        chrome.runtime.sendMessage(editorExtensionId, 
+          { header: "UPDATE_TIMES", 
+            compCounts: JSON.stringify(compCounts), 
+            compInstance: JSON.stringify(compInstance), 
+            compTimes: JSON.stringify(compTimes), 
+            compArray: JSON.stringify(components) 
+          });
         return true;
     }
   });
@@ -291,23 +299,6 @@ let editorExtensionId = '${editorExtensionId}';
       // console.log("compCounts", compCounts);
     });
 
-    component.$$.after_update.push(() => {
-      let now = window.performance.now();
-      const curId = component.$$.id;
-      // console.log('component is:', curId, 'and current time is:', now)
-      let rendertime = now - component.$$.before_update.time;
-      // let rendertime = now - component.$$.before_update.time;
-      if (isFirstAfterUpdate) { return isFirstAfterUpdate = false;}
-    
-      // console.log( tagName, ' ' , curId , 'render time is is:', rendertime);
-      // console.log(Date.now())
-      // console.log('AFTER IS:', window.performance.now())
-      //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
-      // else compCounts[curId] = 1;
-      compCounts[curId] += 1;
-      compTimes[curId] = parseFloat(rendertime).toFixed(3);
-    });
-
 
     //CONSOLE LOG HERE BC A COMPONENT HAS BEEN RERENDERED
     // console.log('component rerendered:', window.performance.now())
@@ -344,6 +335,24 @@ let editorExtensionId = '${editorExtensionId}';
       console.log("compCounts before update", compCounts);
     });
 
+    // component.$$.after_update.push(() => {
+    //   let now = window.performance.now();
+    //   const curId = component.$$.id;
+    //   // console.log('component is:', curId, 'and current time is:', now)
+    //   let rendertime = now - component.$$.before_update.time;
+    //   // let rendertime = now - component.$$.before_update.time;
+    //   if (isFirstAfterUpdate) { return isFirstAfterUpdate = false;}
+    
+    //   // console.log( tagName, ' ' , curId , 'render time is is:', rendertime);
+    //   // console.log(Date.now())
+    //   // console.log('AFTER IS:', window.performance.now())
+    //   //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
+    //   // else compCounts[curId] = 1;
+    //   compCounts[curId] += 1;
+    //   console.log("compCounts before update", compCounts)
+      
+    // });
+
     component.$$.after_update.push(() => {
       let now = window.performance.now();
       const curId = component.$$.id;
@@ -358,8 +367,7 @@ let editorExtensionId = '${editorExtensionId}';
       //  if (compCounts.hasOwnProperty(curId)) compCounts[curId] += 1;
       // else compCounts[curId] = 1;
       compCounts[curId] += 1;
-      console.log("compCounts before update", compCounts)
-      
+      compTimes[curId] = parseFloat(rendertime).toFixed(3);
     });
 
   })
@@ -370,7 +378,8 @@ let editorExtensionId = '${editorExtensionId}';
         // We only accept messages from ourselves
         console.log('injected page - heard message: ', header );
 
-        chrome.runtime.sendMessage(editorExtensionId, { body: "INITIAL-LOAD", compCounts: JSON.stringify(compCounts), compInstance: JSON.stringify(compInstance), compTimes: JSON.stringify(compTimes) });
+        chrome.runtime.sendMessage(editorExtensionId, 
+        { header: "INITIAL_LOAD", compCounts: JSON.stringify(compCounts), compInstance: JSON.stringify(compInstance), compTimes: JSON.stringify(compTimes), compArray: JSON.stringify(components) });
     }, false);
  
 })();

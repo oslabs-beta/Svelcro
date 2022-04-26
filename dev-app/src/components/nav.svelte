@@ -8,10 +8,10 @@
 
   let child;
   let child1;
-  let child2;
+  // let child2;
 
   const componentShow = (passedChild) => {
-    const children = [child, child1, child2];
+    const children = [child, child1];
     children.forEach((el) => (el === passedChild ? el.show() : el.noShow()));
   };
 </script>

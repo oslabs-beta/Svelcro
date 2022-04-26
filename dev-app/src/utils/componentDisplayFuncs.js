@@ -642,6 +642,8 @@ import exploreCompositeDataType from "./exploreCompositeDataType.js";
 import * as d3 from "d3";
 
 export const getData = (tab , compRecord) => {
+  console.log('GETDATE FUNCTION CALLED: ', tab, compRecord);
+  if (tab !== 'chart' && tab !== 'tree') return;
   console.log('componentDisplayFunc - compRecord in getData: ', compRecord)
   let i = 0;
   let componentNames = [];

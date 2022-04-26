@@ -7,7 +7,7 @@
   $: $compArrayStore, run($type, $compArrayStore);
 
   function run(type, compArrayStore) {
-    console.log("Component Tree - type", type, compArrayStore);
+    // console.log("Component Tree - type", type, compArrayStore);
 
     getData(type, compArrayStore);
   }

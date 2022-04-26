@@ -5,7 +5,7 @@
   $: $compCountsStore, run($type);
 
   function run(type) {
-    console.log("profiler graphs - type", type);
+    // console.log("profiler graphs - type", type);
 
     getGraphs(type);
   }
@@ -86,17 +86,17 @@
 
   const getGraphs = (type) => {
     //find max value of the data to determine x axis
-    console.log("getGraphs - type: ", type);
+    // console.log("getGraphs - type: ", type);
     if (type !== "time" && type !== "count") return;
 
     const findMaxTime = (input) => {
       let values = input.map((el) => el.time);
-      console.log("values is:", values);
+      // console.log("values is:", values);
       return Math.max(...values);
     };
     const findMaxCount = (input) => {
       let values = input.map((el) => el.count);
-      console.log("values is:", values);
+      // console.log("values is:", values);
       return Math.max(...values);
     };
 
@@ -104,7 +104,7 @@
       case "time":
         // console.log('we are in time')
         let maxTime = Math.ceil(findMaxTime($compTimesStore));
-        console.log("maxTime is:", maxTime);
+        // console.log("maxTime is:", maxTime);
         var margin = { top: 20, right: 30, bottom: 40, left: 90 },
           width = 460 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;

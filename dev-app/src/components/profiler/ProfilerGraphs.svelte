@@ -1,71 +1,93 @@
 <script>
   // COMPONENT IMPORTS
   import * as d3 from "d3";
+  import { compCountsStore, compTimesStore, type } from "../../store.js";
+  $: $compCountsStore, run($type);
 
-  let compCountRecord = [];
-  let compTimeRecord = [];
+  function run(type) {
+    console.log("profiler graphs - type", type);
+
+    getGraphs(type);
+  }
+
+  let compCountRecord = $compCountsStore;
+  let compTimeRecord = $compTimesStore;
   let timePanel = false;
   let countPanel = false;
 
   chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-    if (msg.body === "UPDATE_RENDER") {
-      const { data } = msg;
-      console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
-
-      const tempObj = { ...JSON.parse(data) };
-      // for (const property in tempObj) {
-      //   compCountRecord[property] = tempObj[property];
+    if (msg.header === "UPDATE_RENDER") {
+      // const { data } = msg;
+      // console.log(
+      //   "ProfilerGraph - recieving at Dev Tools! Coming from ",
+      //   JSON.parse(data)
+      // );
+      // const tempObj = { ...JSON.parse(data) };
+      // // for (const property in tempObj) {
+      // //   compCountRecord[property] = tempObj[property];
+      // // }
+      // const countData = [];
+      // for (let key in tempObj) {
+      //   let subObj = {};
+      //   subObj.component = key;
+      //   subObj.count = tempObj[key];
+      //   countData.push(subObj);
+      //   console.log("profilerGraphs - subObj after each itr: ", subObj);
+      //   console.log("countData - subObj after each itr: ", countData);
       // }
-      const countData = [];
-      for (let key in tempObj) {
-        let subObj = {};
-        subObj.component = key;
-        subObj.count = tempObj[key];
-        countData.push(subObj);
-      }
-      compCountRecord = countData;
-
-      console.log("compCountRecord: ", compCountRecord);
-      // console.log('testing:', Object.entries(compCountRecord));
-
-      if (countPanel) {
-        let graphCount = document.getElementById("graph");
-        graphCount.remove();
-        getGraphs("count");
-      }
+      // compCountRecord = countData;
+      // console.log("compCountRecord: ", compCountRecord);
+      // // console.log('testing:', Object.entries(compCountRecord));
+      // if (countPanel) {
+      //   let graphCount = document.getElementById("graph");
+      //   graphCount.remove();
+      //   getGraphs("count");
+      // }
     }
-    if (msg.body === "UPDATE_TIMES") {
-      console.log("WE ARE RIGHT HERE");
-      // console.log("recieving at Dev Tools! Coming from ", body);
-      const { data } = msg;
-      console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
-
-      const tempTimeObj = { ...JSON.parse(data) };
-      // for (const property in tempObj) {
-      //   compCountRecord[property] = tempObj[property];
+    if (msg.header === "UPDATE_TIMES") {
+      // console.log("WE ARE RIGHT HERE");
+      // // console.log("recieving at Dev Tools! Coming from ", body);
+      // const { data } = msg;
+      // console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
+      // const tempTimeObj = { ...JSON.parse(data) };
+      // // for (const property in tempObj) {
+      // //   compCountRecord[property] = tempObj[property];
+      // // }
+      // const timeData = [];
+      // for (let key in tempTimeObj) {
+      //   let timeObj = {};
+      //   timeObj.component = key;
+      //   timeObj.time = tempTimeObj[key];
+      //   timeData.push(timeObj);
       // }
-      const timeData = [];
-      for (let key in tempTimeObj) {
-        let timeObj = {};
-        timeObj.component = key;
-        timeObj.time = tempTimeObj[key];
-        timeData.push(timeObj);
-      }
-      compTimeRecord = timeData;
-
-      console.log("compTimeRecord: ", compTimeRecord);
-      // console.log('testing:', Object.entries(compCountRecord));
-
-      if (timePanel) {
-        let graphTime = document.getElementById("graph");
-        graphTime.remove();
-        getGraphs("time");
-      }
+      // compTimeRecord = timeData;
+      // console.log("compTimeRecord: ", compTimeRecord);
+      // // console.log('testing:', Object.entries(compCountRecord));
+      // if (timePanel) {
+      //   let graphTime = document.getElementById("graph");
+      //   graphTime.remove();
+      //   getGraphs("time");
+      // }
     }
     return true;
   });
+
+  // if (timePanel) {
+  //   let graphTime = document.getElementById("graph");
+  //   graphTime.remove();
+  //   getGraphs("time");
+  // }
+
+  // if (countPanel) {
+  //   let graphCount = document.getElementById("graph");
+  //   graphCount.remove();
+  //   getGraphs("count");
+  // }
+
   const getGraphs = (type) => {
     //find max value of the data to determine x axis
+    console.log("getGraphs - type: ", type);
+    if (type !== "time" && type !== "count") return;
 
     const findMaxTime = (input) => {
       let values = input.map((el) => el.time);
@@ -81,7 +103,7 @@
     switch (type) {
       case "time":
         // console.log('we are in time')
-        let maxTime = Math.ceil(findMaxTime(compTimeRecord));
+        let maxTime = Math.ceil(findMaxTime($compTimesStore));
         console.log("maxTime is:", maxTime);
         var margin = { top: 20, right: 30, bottom: 40, left: 90 },
           width = 460 - margin.left - margin.right,
@@ -216,16 +238,16 @@
             .attr("y", height - 340)
             .attr("text-anchor", "middle")
             .style("font-size", "14px")
-            .text("Render Times per Component")
+            .text("Render Time per Component")
             .style("fill", "rgb(163, 163, 163)");
         };
 
-        generateTimeGraph(compTimeRecord);
+        generateTimeGraph($compTimesStore);
         break;
 
       //count graph
       case "count":
-        let maxCount = findMaxCount(compCountRecord);
+        let maxCount = findMaxCount($compCountsStore);
         console.log("maxCount");
         // set the dimensions and margins of the graph
         var margin = { top: 20, right: 30, bottom: 40, left: 90 },
@@ -312,7 +334,7 @@
             .style("fill", "rgb(163, 163, 163)");
         };
         console.log("data is:", compCountRecord);
-        generateCountGraph(compCountRecord);
+        generateCountGraph($compCountsStore);
         break;
     }
   };
@@ -322,16 +344,12 @@
   <nav class="header" id="profile-navbar">
     <button
       on:click={() => {
-        countPanel = false;
-        timePanel = true;
-        getGraphs("time");
+        type.set("time");
       }}>Render Time</button
     >
     <button
       on:click={() => {
-        timePanel = false;
-        countPanel = true;
-        getGraphs("count");
+        type.set("count");
       }}>Render Count</button
     >
   </nav>

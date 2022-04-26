@@ -1,55 +1,57 @@
 <script>
-  import * as getData from "../../utils/componentDisplayFuncs";
+  import { getData } from "../../utils/componentDisplayFuncs";
+
+  // STORE IMPORT
+  import { compArrayStore, type } from "../../store";
+  // $: $compArrayStore, getData($type, $compArrayStore);
+  $: $compArrayStore, run($type, $compArrayStore);
+
+  function run(type, compArrayStore) {
+    console.log("Component Tree - type", type, compArrayStore);
+
+    getData(type, compArrayStore);
+  }
+
+  // RANKIN/MING TEST
 
   let compInstanceRecord = {};
   let compRecord;
 
-  chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-    if (msg.body === "UPDATE_INSTANCE") {
-      const { data, components } = msg;
-      console.log("components in UPDATE_INSTANCE: ", JSON.parse(components));
-
-      // Updating Instance
-      for (const key in compInstanceRecord) {
-        delete compInstanceRecord[key];
-      }
-      const tempObj = { ...JSON.parse(data) };
-      console.log("data in UPDATE_INSTANCE: ", tempObj);
-      for (const property in tempObj) {
-        compInstanceRecord[property] = tempObj[property];
-      }
-
-      // Updating Component Record
-      compRecord = JSON.parse(components);
-    }
-    return true;
-  });
-
   // chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-  //   if (msg.body === "UPDATE_RENDER") {
-  //     const { data } = msg;
-  //     console.log("compInstanceRecord: ", compInstanceRecord);
+  //   if (msg.body === "UPDATE_INSTANCE") {
+  //     const { data, components } = msg;
+  //     console.log("components in UPDATE_INSTANCE: ", JSON.parse(components));
 
   //     // Updating Instance
   //     for (const key in compInstanceRecord) {
   //       delete compInstanceRecord[key];
   //     }
   //     const tempObj = { ...JSON.parse(data) };
-  //     console.log("data in UPDATE_RENDER: ", tempObj )
+  //     // console.log("data in UPDATE_INSTANCE: ", tempObj);
   //     for (const property in tempObj) {
   //       compInstanceRecord[property] = tempObj[property];
   //     }
 
   //     // Updating Component Record
-  //     compRecord = components;
+  //     compRecord = JSON.parse(components);
   //   }
+  //   return true;
   // });
 </script>
 
 <div id="component-tree-display">
   <nav class="header" id="views-navbar">
-    <button on:click={() => getData("tree", compRecord)}>TREE</button>
-    <button on:click={() => getData("chart", compRecord)}>HIERARCHY</button>
+    <button
+      on:click={() => {
+        type.set("tree");
+      }}>Tree</button
+    >
+
+    <button
+      on:click={() => {
+        type.set("chart");
+      }}>Hierarchy</button
+    >
   </nav>
   <br />
 </div>

@@ -13,35 +13,24 @@ chrome.runtime.onInstalled.addListener(()=>{
     
     
     chrome.runtime.onMessage.addListener((msg, sender, response)=> {
-        console.log('recieved at BACKGROUND.JS');
       
         // Recieves msg body from DEVTOOLSscripts
         if(msg){
-          console.log('Data from Dev Tool');
-        //   const { header } = msg;
+          console.log('background.js - Data from Dev Tool');
     
-          console.log('header:',msg);
+          console.log('background.js - header:',msg);
     
         //   chrome.runtime.sendMessage({header: "from Dev tools to background to ???"});
         // MING TEST
 
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 chrome.tabs.sendMessage(tabs[0].id, {header: msg}, function(response) {
-                console.log(response);
+                // console.log(response);
                 });
             });
         }
         
         return true;
     })
-
-    // chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    //     if (changeInfo.url) {
-    //         console.log(changeInfo.url)
-    //         var hostname = new URL(changeInfo.url).hostname;
-    //         sendMessage(tabId, hostname)
-    
-    //     }
-    // });
 
 })

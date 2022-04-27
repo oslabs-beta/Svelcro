@@ -72,18 +72,6 @@
     return true;
   });
 
-  // if (timePanel) {
-  //   let graphTime = document.getElementById("graph");
-  //   graphTime.remove();
-  //   getGraphs("time");
-  // }
-
-  // if (countPanel) {
-  //   let graphCount = document.getElementById("graph");
-  //   graphCount.remove();
-  //   getGraphs("count");
-  // }
-
   const getGraphs = (type) => {
     //find max value of the data to determine x axis
     // console.log("getGraphs - type: ", type);
@@ -343,11 +331,13 @@
 <div id="profiler-Graphs">
   <nav class="header" id="profile-navbar">
     <button
+      id = "time-button"
       on:click={() => {
         type.set("time");
       }}>Render Time</button
     >
     <button
+    id = "count-button"
       on:click={() => {
         type.set("count");
       }}>Render Count</button

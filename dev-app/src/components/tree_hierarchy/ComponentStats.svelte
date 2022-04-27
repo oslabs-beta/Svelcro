@@ -6,7 +6,7 @@
 <div id="component-stats">
   Component stats
 
-  <ul>
+  <ul id="stat-list">
     {#each $compArrayStore as comp}
       <li>
         {`${comp.$$.id}: ${JSON.stringify(comp.$$.ctx[0])}`}
@@ -21,5 +21,14 @@
 
     width: 50%;
     height: 100%;
+  }
+
+  #stat-list {
+    list-style: none;
+    text-align: left;
+  }
+
+  li {
+    margin-bottom: 5px;
   }
 </style>

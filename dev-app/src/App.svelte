@@ -30,6 +30,7 @@
     ) {
       let { compCounts, compInstance, compTimes, compArray } = msg;
 
+      // parse all incoming data
       compCounts = JSON.parse(compCounts);
       compInstance = JSON.parse(compInstance);
       compTimes = JSON.parse(compTimes);

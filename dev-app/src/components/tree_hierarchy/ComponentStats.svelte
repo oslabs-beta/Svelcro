@@ -4,9 +4,7 @@
 </script>
 
 <div id="component-stats">
-  <div id="stats-header">
-    Component stats
-  </div>
+  <div id="stats-header">Component stats</div>
 
   <ul id="stat-list">
     {#each $compArrayStore as comp}
@@ -33,7 +31,7 @@
   li {
     margin-bottom: 5px;
   }
-  
+
   #stats-header {
     background-color: rgb(45, 42, 45);
     border-bottom: 1px solid rgb(70, 80, 90);

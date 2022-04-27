@@ -2,7 +2,6 @@
   // COMPONENT IMPORTS
   import ComponentDisplay from "./displays/ComponentDisplay.svelte";
   import ProfilerDisplay from "./displays/ProfilerDisplay.svelte";
-  import TimeMachineDisplay from "./displays/TimeMachineDisplay.svelte";
 
   import Hidden from "./Hidden.svelte";
 
@@ -16,13 +15,15 @@
   };
 </script>
 
-<nav>
+<nav data-testid = 'nav-bar'>
   <button
+    data-testid = 'comp-button'
     on:click={() => {
       componentShow(child);
     }}>Components</button
   >
   <button
+    data-testid = 'profiler-button'
     on:click={() => {
       componentShow(child1);
     }}>Profiler</button

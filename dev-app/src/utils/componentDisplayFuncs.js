@@ -638,8 +638,8 @@
 // export default getData;
 
 import { parse, walk } from 'svelte/compiler';
+import * as d3 from 'd3';
 import exploreCompositeDataType from "./exploreCompositeDataType.js";
-import * as d3 from "d3";
 
 export const getData = (tab , compRecord) => {
   console.log('GETDATE FUNCTION CALLED: ', tab, compRecord);

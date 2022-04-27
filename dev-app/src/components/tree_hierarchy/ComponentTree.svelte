@@ -3,12 +3,9 @@
 
   // STORE IMPORT
   import { compArrayStore, type } from "../../store";
-  // $: $compArrayStore, getData($type, $compArrayStore);
   $: $compArrayStore, run($type, $compArrayStore);
 
   function run(type, compArrayStore) {
-    // console.log("Component Tree - type", type, compArrayStore);
-
     getData(type, compArrayStore);
   }
 
@@ -16,27 +13,6 @@
 
   let compInstanceRecord = {};
   let compRecord;
-
-  // chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-  //   if (msg.body === "UPDATE_INSTANCE") {
-  //     const { data, components } = msg;
-  //     console.log("components in UPDATE_INSTANCE: ", JSON.parse(components));
-
-  //     // Updating Instance
-  //     for (const key in compInstanceRecord) {
-  //       delete compInstanceRecord[key];
-  //     }
-  //     const tempObj = { ...JSON.parse(data) };
-  //     // console.log("data in UPDATE_INSTANCE: ", tempObj);
-  //     for (const property in tempObj) {
-  //       compInstanceRecord[property] = tempObj[property];
-  //     }
-
-  //     // Updating Component Record
-  //     compRecord = JSON.parse(components);
-  //   }
-  //   return true;
-  // });
 </script>
 
 <div id="component-tree-display">
@@ -71,6 +47,7 @@
     display: flex;
     justify-content: space-evenly;
     height: 4%;
+    min-height: 25px;
     width: 100%;
   }
 

@@ -4,11 +4,9 @@
 </script>
 
 <div id="component-stats">
-  <div id="stats-header">
-    Component stats
-  </div>
+  <div id="stats-header">Component stats</div>
 
-  <ul>
+  <ul id="stat-list">
     {#each $compArrayStore as comp}
       <li>
         {`${comp.$$.id}: ${JSON.stringify(comp.$$.ctx[0])}`}
@@ -23,6 +21,15 @@
 
     width: 50%;
     height: 100%;
+  }
+
+  #stat-list {
+    list-style: none;
+    text-align: left;
+  }
+
+  li {
+    margin-bottom: 5px;
   }
 
   #stats-header {

@@ -50,6 +50,7 @@
     justify-content: space-evenly;
 
     height: 6%;
+    min-height: 35px;
   }
 
   button {

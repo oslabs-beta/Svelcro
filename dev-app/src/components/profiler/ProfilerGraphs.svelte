@@ -361,6 +361,7 @@
     display: flex;
     justify-content: space-evenly;
     height: 4%;
+    min-height: 25px;
   }
 
   button {

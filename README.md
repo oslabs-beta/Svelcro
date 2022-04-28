@@ -27,9 +27,10 @@ Extension Coming To Chrome Store Soon...
 
 Feel free to fork and clone this repo! Otherwise, just download Svelcro and save it somewhere on your computer.
 
-Open Svelcro directory and install depencencies
+Make Svelcro/dev-app your current directory, and install depencencies.
 
 ```
+cd Svelcro/dev-app
 npm install
 ```
 

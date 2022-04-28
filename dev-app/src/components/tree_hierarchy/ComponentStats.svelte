@@ -5,7 +5,6 @@
 
 <div id="component-stats">
   <div id="stats-header">Component stats</div>
-
   <ul id="stat-list">
     {#each $compArrayStore as comp}
       <li>
@@ -18,7 +17,6 @@
 <style>
   #component-stats {
     border-left: 1px solid rgb(1, 1, 1);
-
     width: 50%;
     height: 100%;
   }

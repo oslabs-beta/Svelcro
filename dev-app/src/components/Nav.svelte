@@ -7,7 +7,6 @@
 
   let child;
   let child1;
-  // let child2;
 
   const componentShow = (passedChild) => {
     const children = [child, child1];
@@ -28,7 +27,6 @@
       componentShow(child1);
     }}>Profiler</button
   >
-  <!-- <button on:click={() => {componentShow(child2)}}>Time-Machine</button> -->
 </nav>
 
 <Hidden bind:this={child} on:show={(e) => (child.shown = e.detail)}>
@@ -39,16 +37,11 @@
   <ProfilerDisplay />
 </Hidden>
 
-<!-- <Hidden bind:this={child2} on:show={e => child2.shown = e.detail}>
-  <TimeMachineDisplay/>
-</Hidden> -->
 <style>
   nav {
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-
     display: flex;
     justify-content: space-evenly;
-
     height: 6%;
     min-height: 35px;
   }
@@ -58,9 +51,6 @@
     cursor: pointer;
     border: none;
     width: 100%;
-    /* font-size: 18px; */
-
-    /* TEXT COLOR */
     color: rgba(245, 245, 245, 0.543);
   }
 </style>

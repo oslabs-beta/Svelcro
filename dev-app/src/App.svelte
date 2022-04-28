@@ -1,6 +1,6 @@
 <script>
   // COMPONENT IMPORTS
-  import Nav from "./components/nav.svelte";
+  import Nav from "./components/Nav.svelte";
   import { onMount } from "svelte";
   // STORE IMPORTS
   import {
@@ -9,17 +9,12 @@
     compTimesStore,
     compArrayStore,
   } from "./store.js";
-  // import { get } from "svelte/store";
+
 
   onMount(() => {
     console.log("sending message from app mount");
     chrome.runtime.sendMessage({ header: "APP" });
   });
-
-  // const handleclick = () => {
-  //   console.log("sending message from app click");
-  //   chrome.runtime.sendMessage({ header: "APP" });
-  // };
 
   chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
     if (
@@ -36,8 +31,6 @@
       compTimes = JSON.parse(compTimes);
       compArray = JSON.parse(compArray);
 
-      console.log("compCounts parsed: ", compCounts);
-
       // Get count data in correct format
       const adjustedCompCounts = [];
       for (const comp in compCounts) {
@@ -46,10 +39,6 @@
         tempObj.count = compCounts[comp];
         adjustedCompCounts.push(tempObj);
       }
-      console.log(
-        "app adjusted comp countsadjustedCompCounts: ",
-        adjustedCompCounts
-      );
 
       // Get time data in correct format
       const adjustedCompTimes = [];
@@ -59,11 +48,6 @@
         timeObj.time = compTimes[comp];
         adjustedCompTimes.push(timeObj);
       }
-
-      console.log(
-        "app adjusted comp timesadjustedCompCounts: ",
-        adjustedCompTimes
-      );
 
       // Added compCounts to compCountsStore so it can be accessed in other components
       compCountsStore.set([...adjustedCompCounts]);
@@ -77,7 +61,6 @@
       // Added compCounts to compCountsStore so it can be accessed in other components
       compArrayStore.set([...compArray]);
 
-      // console.log("comparraystore:", get(compArrayStore));
     }
   });
 </script>
@@ -85,7 +68,6 @@
 <main>
   <h1>Svelcro</h1>
   <Nav />
-  <!-- <button on:click={handleclick}>click</button> -->
 </main>
 
 <style>
@@ -94,9 +76,9 @@
     max-width: auto;
     margin: 0 auto;
     height: 100%;
-    /* Background Color */
     background-color: rgb(37, 35, 37);
   }
+
   h1 {
     color: #ff3e00;
     text-transform: uppercase;
@@ -104,6 +86,7 @@
     font-weight: 100;
     margin: 0;
   }
+
   @media (min-width: 640px) {
     main {
       max-width: none;

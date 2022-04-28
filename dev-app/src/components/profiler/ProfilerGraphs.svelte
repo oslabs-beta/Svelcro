@@ -2,97 +2,25 @@
   // COMPONENT IMPORTS
   import * as d3 from "d3";
   import { compCountsStore, compTimesStore, type } from "../../store.js";
-  $: $compCountsStore, run($type);
-
-  function run(type) {
-    // console.log("profiler graphs - type", type);
-
-    getGraphs(type);
-  }
-
-  let compCountRecord = $compCountsStore;
-  let compTimeRecord = $compTimesStore;
-  let timePanel = false;
-  let countPanel = false;
-
-  chrome.runtime.onMessageExternal.addListener((msg, sender, response) => {
-    if (msg.header === "UPDATE_RENDER") {
-      // const { data } = msg;
-      // console.log(
-      //   "ProfilerGraph - recieving at Dev Tools! Coming from ",
-      //   JSON.parse(data)
-      // );
-      // const tempObj = { ...JSON.parse(data) };
-      // // for (const property in tempObj) {
-      // //   compCountRecord[property] = tempObj[property];
-      // // }
-      // const countData = [];
-      // for (let key in tempObj) {
-      //   let subObj = {};
-      //   subObj.component = key;
-      //   subObj.count = tempObj[key];
-      //   countData.push(subObj);
-      //   console.log("profilerGraphs - subObj after each itr: ", subObj);
-      //   console.log("countData - subObj after each itr: ", countData);
-      // }
-      // compCountRecord = countData;
-      // console.log("compCountRecord: ", compCountRecord);
-      // // console.log('testing:', Object.entries(compCountRecord));
-      // if (countPanel) {
-      //   let graphCount = document.getElementById("graph");
-      //   graphCount.remove();
-      //   getGraphs("count");
-      // }
-    }
-    if (msg.header === "UPDATE_TIMES") {
-      // console.log("WE ARE RIGHT HERE");
-      // // console.log("recieving at Dev Tools! Coming from ", body);
-      // const { data } = msg;
-      // console.log("recieving at Dev Tools! Coming from ", JSON.parse(data));
-      // const tempTimeObj = { ...JSON.parse(data) };
-      // // for (const property in tempObj) {
-      // //   compCountRecord[property] = tempObj[property];
-      // // }
-      // const timeData = [];
-      // for (let key in tempTimeObj) {
-      //   let timeObj = {};
-      //   timeObj.component = key;
-      //   timeObj.time = tempTimeObj[key];
-      //   timeData.push(timeObj);
-      // }
-      // compTimeRecord = timeData;
-      // console.log("compTimeRecord: ", compTimeRecord);
-      // // console.log('testing:', Object.entries(compCountRecord));
-      // if (timePanel) {
-      //   let graphTime = document.getElementById("graph");
-      //   graphTime.remove();
-      //   getGraphs("time");
-      // }
-    }
-    return true;
-  });
+  $: $compCountsStore, getGraphs($type);
 
   const getGraphs = (type) => {
     //find max value of the data to determine x axis
-    // console.log("getGraphs - type: ", type);
     if (type !== "time" && type !== "count") return;
 
     const findMaxTime = (input) => {
       let values = input.map((el) => el.time);
-      // console.log("values is:", values);
       return Math.max(...values);
     };
     const findMaxCount = (input) => {
       let values = input.map((el) => el.count);
-      // console.log("values is:", values);
+
       return Math.max(...values);
     };
 
     switch (type) {
       case "time":
-        // console.log('we are in time')
         let maxTime = Math.ceil(findMaxTime($compTimesStore));
-        // console.log("maxTime is:", maxTime);
         var margin = { top: 20, right: 30, bottom: 40, left: 90 },
           width = 460 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
@@ -169,48 +97,6 @@
               return x(d.time) + 1;
             });
 
-          // var xScale = d3.scale.linear()
-          // .range([0, innerWidth - margin.right - margin.left], .1);
-
-          // var yScale = d3.scale.ordinal()
-          // .rangeRoundBands([innerHeight , 0], barPadding, barPaddingOuter);
-
-          // horizontal bar labels
-
-          // var xAxisLabelOffset = 75;
-
-          // horizontal bar labels
-          //   svg.append("g")
-          //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-          //     .selectAll(".textlabel")
-          //   .data(data)
-          //   .enter()
-          //   .append("text")
-          // .attr("class", "textlabel")
-          // .style("font-family", "Arial")
-          // .attr("x", function(d){ return xScale(parseFloat(d["Percentage"])) ;  })
-          // .attr("y", function(d){ return yScale(d["LabelD3"]) + yScale.rangeBand()/2; })
-          // .text(function(d){ return (d["Percentage"] + "%"); });
-
-          // X-axis labels
-          // svg.append("text")
-          // .attr("text-anchor", "middle")
-          // .style("font-size", "13px")
-          // .style("color", "#333333")
-          // .attr("transform", "translate("+ (outerWidth/2) + "," +(outerHeight-(padding/4)) + ")")
-          // .text("% of Households")
-          // .style("font-family", "Arial");
-
-          //title for the chart
-
-          // svg.append("text")
-          // .attr("text-anchor", "middle")
-          // .style("font-size", "16px")
-          // .style("color", "#333333")
-          // .attr("transform", "translate("+ (outerWidth/3.78) + "," +(outerHeight/30) + ")")
-          // .text("Housing Tenure of DC Residents")
-          // .style("font-family", "Arial");
-
           svg
             .append("text")
             .attr("class", "x_label")
@@ -236,7 +122,6 @@
       //count graph
       case "count":
         let maxCount = findMaxCount($compCountsStore);
-        console.log("maxCount");
         // set the dimensions and margins of the graph
         var margin = { top: 20, right: 30, bottom: 40, left: 90 },
           width = 460 - margin.left - margin.right,
@@ -321,7 +206,6 @@
             .text("Render Count per Component")
             .style("fill", "rgb(163, 163, 163)");
         };
-        console.log("data is:", compCountRecord);
         generateCountGraph($compCountsStore);
         break;
     }
@@ -350,7 +234,6 @@
   #profiler-Graphs {
     width: 100%;
     height: 100%;
-
     resize: horizontal;
     overflow: auto;
   }
@@ -369,8 +252,6 @@
     cursor: pointer;
     border: none;
     width: 100%;
-
-    /* TEXT COLOR */
     color: rgba(245, 245, 245, 0.543);
   }
 
@@ -378,6 +259,7 @@
     display: flex;
     width: 100%;
   }
+  
   .x_label {
     fill: rgb(163, 163, 163);
   }

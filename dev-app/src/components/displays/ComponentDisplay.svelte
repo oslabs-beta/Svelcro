@@ -2,7 +2,6 @@
   // COMPONENT IMPORTS
   import ComponentStats from "../tree_hierarchy/ComponentStats.svelte";
   import ComponentTree from "../tree_hierarchy/ComponentTree.svelte";
-  import { type } from "../../store";
 </script>
 
 <div id="component-display">

@@ -27,7 +27,7 @@ Extension Coming To Chrome Store Soon...
 
 Feel free to fork and clone this repo! Otherwise, just download Svelcro and save it somewhere on your computer.
 
-Make Svelcro/dev-app your current directory,install depencencies, and run build.
+Make Svelcro/dev-app your current directory, install depencencies, and run build.
 
 ```
 cd Svelcro/dev-app
@@ -75,11 +75,12 @@ Notice any issues or bugs? Open an issue!
 
 <!-- PLACEHOLDER FOR LANDING PAGE, ADD LANDINGPAGE LINK-->
 
-Visit the [Svelcro website!]()
+Visit the [Svelcro website!](https://www.svelcro.dev/
+)
 
 <!-- PLACEHOLDER ARTICLE, ADD ARTICLE LINK -->
 
-Read more at Medium - [Component Performance Monitoring with Selvro]()
+Read more at Medium - [Component Performance Monitoring with Selvro](https://medium.com/@svelcrodt/component-performance-monitoring-in-svelte-with-svelcro-d0bbe1d6aae0)
 
 # Contributors
 

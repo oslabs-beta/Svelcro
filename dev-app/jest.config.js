@@ -1,11 +1,3 @@
-// module.exports = {
-//   transform: {
-//     '^.+\\.svelte$': 'svelte-jester',
-//     '\\.js$': '<rootDir>/node_modules/babel-jest',
-//   },
-//   moduleFileExtensions: ['js', 'svelte'],
-// };
-
 module.exports = {
   transform: {
     '^.+\\.js$': 'babel-jest',

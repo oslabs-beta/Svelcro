@@ -3,16 +3,8 @@
 
   // STORE IMPORT
   import { compArrayStore, type } from "../../store";
-  $: $compArrayStore, run($type, $compArrayStore);
+  $: $compArrayStore, getData($type, $compArrayStore);
 
-  function run(type, compArrayStore) {
-    getData(type, compArrayStore);
-  }
-
-  // RANKIN/MING TEST
-
-  let compInstanceRecord = {};
-  let compRecord;
 </script>
 
 <div id="component-tree-display">
@@ -36,8 +28,6 @@
   #component-tree-display {
     width: 50%;
     height: 100%;
-
-    /* resize: horizontal; */
     overflow: auto;
   }
 
@@ -56,8 +46,6 @@
     cursor: pointer;
     border: none;
     width: 100%;
-
-    /* TEXT COLOR */
     color: rgba(245, 245, 245, 0.543);
   }
 

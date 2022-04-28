@@ -16,17 +16,17 @@
         "activeTab"
     ],
     "content_scripts": [{
-        "matches": ["<all_urls>"],
+        "matches": ["https://*/*", "http://*/*"],
         "js": ["document_start.js"],
         "run_at": "document_start"
     }],
     "web_accessible_resources": [{
         "resources": ["contentScript.js"],
-        "matches": ["<all_urls>"]
+        "matches": ["https://*/*", "http://*/*"]
     },
     {
         "resources": ["document_start.js"],
-        "matches": ["<all_urls>"]
+        "matches": ["https://*/*", "http://*/*"]
     }],
     "externally_connectable": {
         "matches": ["http://localhost/*"]

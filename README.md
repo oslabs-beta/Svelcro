@@ -27,11 +27,12 @@ Extension Coming To Chrome Store Soon...
 
 Feel free to fork and clone this repo! Otherwise, just download Svelcro and save it somewhere on your computer.
 
-Make Svelcro/dev-app your current directory, and install depencencies.
+Make Svelcro/dev-app your current directory, install depencencies, and run build.
 
 ```
 cd Svelcro/dev-app
 npm install
+npm run build
 ```
 
 ![installation](./docs/gifs/installition.gif)
@@ -40,7 +41,7 @@ Navigate to Chrome's extensions page at `chrome://extensions/`.
 
 Turn on 'developer mode' in the top-right corner of the page.
 
-Click on 'load unpacked' at the top-left, and select your local copy of the Svelcro application.
+Click on 'load unpacked' at the top-left, and select your local copy of the Svelcro directory.
 
 Open up your Chrome DevTools, and check to make sure Svelcro is available in the dropdown menu of the navbar!
 
@@ -74,11 +75,12 @@ Notice any issues or bugs? Open an issue!
 
 <!-- PLACEHOLDER FOR LANDING PAGE, ADD LANDINGPAGE LINK-->
 
-Visit the [Svelcro website!]()
+Visit the [Svelcro website!](https://www.svelcro.dev/
+)
 
 <!-- PLACEHOLDER ARTICLE, ADD ARTICLE LINK -->
 
-Read more at Medium - [Component Performance Monitoring with Selvro]()
+Read more at Medium - [Component Performance Monitoring with Selvro](https://medium.com/@svelcrodt/component-performance-monitoring-in-svelte-with-svelcro-d0bbe1d6aae0)
 
 # Contributors
 

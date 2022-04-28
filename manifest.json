@@ -3,6 +3,34 @@
     "version": "1.0",
     "minimum_chrome_version": "10.0",
     "manifest_version": 3,
-    "devtools_page": "devtools.html"
+    "devtools_page": "devtools.html",
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_security_policy": {
+        "extension pages": "script-src 'self' https://d3js.org/d3.v7.min.js; object-src 'self'"
+    },
+    "permissions": [ 
+        "contextMenus",
+        "tabs",
+        "activeTab"
+    ],
+    "content_scripts": [{
+        "matches": ["https://*/*", "http://*/*"],
+        "js": ["document_start.js"],
+        "run_at": "document_start"
+    }],
+    "web_accessible_resources": [{
+        "resources": ["contentScript.js"],
+        "matches": ["https://*/*", "http://*/*"]
+    },
+    {
+        "resources": ["document_start.js"],
+        "matches": ["https://*/*", "http://*/*"]
+    }],
+    "externally_connectable": {
+        "matches": ["http://localhost/*"]
+    }
+    
 }
     

@@ -1,2 +1,4 @@
+chrome.devtools.panels.create('Svelcro', 'callback','panel.html')
 
-chrome.devtools.panels.create('Svelcro', 'callback','panel.html');
+
+  

@@ -4,11 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Svelcro</title>
+
+    <link rel="stylesheet" href="./dev-app/public/build/bundle.css">
+
+    <link rel='icon' type='image/png' href='/favicon.png'>
+	  <link rel='stylesheet' href='./dev-app/public/global.css'>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
   </head>
+  <style> /* set the CSS */
+    .node circle {
+      fill: rgb(163, 163, 163);
+      stroke: #ff3e00;
+      stroke-width: 3px;
+    }
+    
+    .node {
+      font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    color: white;
+
+    }
+    .node text {
+  font: 14px sans-serif;
+  fill: white;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+    .node--internal text {
+      fill: white;
+      font: 16px;
+      font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    }
+    .node--leaf text {
+      fill: white;
+      font: 16px;
+      font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    }
+
+    .link {
+      fill: none;
+      stroke: rgb(99, 99, 99);
+      stroke-width: 2px;
+    }
+    .x_label {
+      color: rgb(163, 163, 163);
+      fill: rgb(163, 163, 163);
+    }
+    
+    </style>
   <body>
     <div class="analysis-output"></div>
-    <script src="panel.js"></script>
-
+    <script src="./dev-app/public/build/bundle.js"></script>
   </body>
 </html>
   

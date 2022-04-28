@@ -102,7 +102,7 @@ const code = `let editorExtensionId = '${editorExtensionId}';
       compInstance[tagName] -= 1;
       // For render count
       delete compCounts[curId];
-
+      delete compTimes[curId];
     });
     
     component.$$.before_update.push(() => {
